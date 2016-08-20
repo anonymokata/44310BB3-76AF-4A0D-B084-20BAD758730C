@@ -1,3 +1,5 @@
 # roman-numeral-calculator-c
 
-My first attempt a kata in C.
+http://codingdojo.org/cgi-bin/index.pl?KataRomanCalculator
+
+My first attempt at a kata in C.
