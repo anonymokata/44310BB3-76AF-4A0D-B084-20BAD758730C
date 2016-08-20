@@ -8,3 +8,6 @@
 
 #test roman_numeral_calculator_add_two_plus_two
 	ck_assert_str_eq(add("II", "II"), "IV");
+
+#test roman_numeral_calculator_add_two_plus_three
+	ck_assert_str_eq(add("II", "III"), "V");

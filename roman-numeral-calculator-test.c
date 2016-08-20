@@ -28,6 +28,14 @@ START_TEST(roman_numeral_calculator_add_two_plus_two)
 {
 #line 10
 	ck_assert_str_eq(add("II", "II"), "IV");
+
+}
+END_TEST
+
+START_TEST(roman_numeral_calculator_add_two_plus_three)
+{
+#line 13
+	ck_assert_str_eq(add("II", "III"), "V");
 }
 END_TEST
 
@@ -42,6 +50,7 @@ int main(void)
     tcase_add_test(tc1_1, roman_numeral_calculator_add_one_plus_one);
     tcase_add_test(tc1_1, roman_numeral_calculator_add_one_plus_two);
     tcase_add_test(tc1_1, roman_numeral_calculator_add_two_plus_two);
+    tcase_add_test(tc1_1, roman_numeral_calculator_add_two_plus_three);
 
     srunner_run_all(sr, CK_ENV);
     nf = srunner_ntests_failed(sr);
