@@ -1,0 +1,4 @@
+#include "roman-numeral-calculator.h"
+
+#test roma_numeral_calculator_add
+	ck_assert_str_eq(add("I", "I"), "II");
