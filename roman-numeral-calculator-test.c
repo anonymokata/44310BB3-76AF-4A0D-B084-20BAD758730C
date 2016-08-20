@@ -8,10 +8,26 @@
 #line 1 "roman-numeral-calculator-test.check"
 #include "roman-numeral-calculator.h"
 
-START_TEST(roma_numeral_calculator_add)
+START_TEST(roman_numeral_calculator_add_one_plus_one)
 {
 #line 4
 	ck_assert_str_eq(add("I", "I"), "II");
+
+}
+END_TEST
+
+START_TEST(roman_numeral_calculator_add_one_plus_two)
+{
+#line 7
+	ck_assert_str_eq(add("I", "II"), "III");
+
+}
+END_TEST
+
+START_TEST(roman_numeral_calculator_add_two_plus_two)
+{
+#line 10
+	ck_assert_str_eq(add("II", "II"), "IV");
 }
 END_TEST
 
@@ -23,7 +39,9 @@ int main(void)
     int nf;
 
     suite_add_tcase(s1, tc1_1);
-    tcase_add_test(tc1_1, roma_numeral_calculator_add);
+    tcase_add_test(tc1_1, roman_numeral_calculator_add_one_plus_one);
+    tcase_add_test(tc1_1, roman_numeral_calculator_add_one_plus_two);
+    tcase_add_test(tc1_1, roman_numeral_calculator_add_two_plus_two);
 
     srunner_run_all(sr, CK_ENV);
     nf = srunner_ntests_failed(sr);

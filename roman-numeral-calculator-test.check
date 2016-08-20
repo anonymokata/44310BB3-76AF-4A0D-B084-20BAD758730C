@@ -1,4 +1,10 @@
 #include "roman-numeral-calculator.h"
 
-#test roma_numeral_calculator_add
+#test roman_numeral_calculator_add_one_plus_one
 	ck_assert_str_eq(add("I", "I"), "II");
+
+#test roman_numeral_calculator_add_one_plus_two
+	ck_assert_str_eq(add("I", "II"), "III");
+
+#test roman_numeral_calculator_add_two_plus_two
+	ck_assert_str_eq(add("II", "II"), "IV");
