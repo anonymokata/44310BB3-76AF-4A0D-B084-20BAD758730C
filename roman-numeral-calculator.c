@@ -39,12 +39,12 @@ void tally_numerals(char* numerals) {
 	}
 }
 
-// void append_n_times(char* string, char character, int n) {
-// 	int count;
-// 	for (count = 1; count <= n; count++) {
-// 		strcat(string, character);
-// 	}	
-// }
+void append_n_times(char* string, char *suffix, int n) {
+	int count;
+	for (count = 1; count <= n; count++) {
+		strcat(string, character);
+	}	
+}
 
 char* add(char* x, char* y) {
 	x_count = 0;
@@ -61,9 +61,10 @@ char* add(char* x, char* y) {
 	}
 
 	int count;
-	for (count = 1; count <= x_count; count++) {
-		strcat(result, "X");
-	}
+	append_n_times(result, "X", x_count);
+	// for (count = 1; count <= x_count; count++) {
+	// 	strcat(result, "X");
+	// }
 
 	for (count = 1; count <= v_count; count++) {
 		strcat(result, "V");
