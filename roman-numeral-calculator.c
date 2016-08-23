@@ -11,8 +11,8 @@ void tally_numerals(char* numerals) {
 	int end;
 
 	end = strlen(numerals) - 1;
+	char previous = '\0';
 	int index;
-	char previous;
 	for (index = end; index >= 0; index--) {
 		if (numerals[index] == 'I') {
 			if (previous == 'V') {
@@ -29,7 +29,7 @@ void tally_numerals(char* numerals) {
 	}
 
 	if (i_count >= 4) {
-		v_count += 1;
+		v_count++;
 		i_count -= 5;
 	}
 
@@ -39,7 +39,7 @@ void tally_numerals(char* numerals) {
 	}
 }
 
-void append_n_times(char* string, char *suffix, int n) {
+void append_n_times(char* string, char* suffix, int n) {
 	int count;
 	for (count = 1; count <= n; count++) {
 		strcat(string, suffix);
