@@ -3,74 +3,73 @@
 
 #include "roman-numeral-calculator.h"
 
-char* add(char* x, char* y)
-{
-	int i = 0;
-	int v = 0;
-	char previous;
+int x_count;
+int v_count;
+int i_count;
 
-	int xend;
-	xend = strlen(x) - 1;
+void tally_numerals(char* numerals) {
+	int end;
+
+	end = strlen(numerals) - 1;
 	int index;
-	for (index = xend; index >= 0; index--)
-	{
-		if (x[index] == 'I')
-		{
-			if (previous == 'V')
-			{
-				v--;
-				i += 4;
+	char previous;
+	for (index = end; index >= 0; index--) {
+		if (numerals[index] == 'I') {
+			if (previous == 'V') {
+				v_count--;
+				i_count += 4;
 			} else {
-				i++;
+				i_count++;
 			}
+		} else if (numerals[index] == 'V') {
+			v_count++;
 		}
-		else if (x[index] == 'V')
-		{
-			v++;
-		}
-		previous = x[index];
+
+		previous = numerals[index];
 	}
 
-	int yend;
-	yend = strlen(y) - 1;
-	previous = '\0';
-	for (index = yend; index >= 0; index--)
-	{
-		if (y[index] == 'I')
-		{
-			if (previous == 'V')
-			{
-				v--;
-				i += 4;
-			}
-			else
-			{
-				i++;
-			}
-		}
-		else if (y[index] == 'V')
-		{
-			v++;
-		}
-		previous = y[index];
+	if (i_count >= 4) {
+		v_count += 1;
+		i_count -= 5;
 	}
 
-	char* result = malloc(strlen(x) + strlen(y) + 1);
+	if (v_count >= 2) {
+		x_count++;
+		v_count -= 2;
+	}
+}
+
+// void append_n_times(char* string, char character, int n) {
+// 	int count;
+// 	for (count = 1; count <= n; count++) {
+// 		strcat(string, character);
+// 	}	
+// }
+
+char* add(char* x, char* y) {
+	x_count = 0;
+	v_count = 0;
+	i_count = 0;
+
+	tally_numerals(x);
+	tally_numerals(y);
+
+	char* result = malloc(v_count + i_count + 1);
 	strcpy(result, "");
-	int count;
-	if (i >= 4) {
-		i -= 5;
-		v += 1;
-	}
-	if (i < 0) {
+	if (i_count < 0) {
 		strcat(result, "I");
 	}
-	for (count = 1; count <= v; count++)
-	{
+
+	int count;
+	for (count = 1; count <= x_count; count++) {
+		strcat(result, "X");
+	}
+
+	for (count = 1; count <= v_count; count++) {
 		strcat(result, "V");
 	}
-	for (count = 1; count <= i; count++)
-	{
+
+	for (count = 1; count <= i_count; count++) {
 		strcat(result, "I");
 	}
 

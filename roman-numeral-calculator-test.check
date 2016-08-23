@@ -1,19 +1,25 @@
 #include "roman-numeral-calculator.h"
 
-#test roman_numeral_calculator_add_one_plus_one
+#test roman_numeral_calculator_add_1_plus_1
 	ck_assert_str_eq(add("I", "I"), "II");
 
-#test roman_numeral_calculator_add_one_plus_two
+#test roman_numeral_calculator_add_1_plus_2
 	ck_assert_str_eq(add("I", "II"), "III");
 
-#test roman_numeral_calculator_add_two_plus_two
+#test roman_numeral_calculator_add_2_plus_2
 	ck_assert_str_eq(add("II", "II"), "IV");
 
-#test roman_numeral_calculator_add_two_plus_three
+#test roman_numeral_calculator_add_2_plus_3
 	ck_assert_str_eq(add("II", "III"), "V");
 
-#test roman_numeral_calculator_add_three_plus_three
+#test roman_numeral_calculator_add_3_plus_3
 	ck_assert_str_eq(add("III", "III"), "VI");
 
-#test roman_numeral_calculator_add_four_plus_three
+#test roman_numeral_calculator_add_4_plus_3
 	ck_assert_str_eq(add("IV", "III"), "VII");
+
+#test roman_numeral_calculator_add_3_plus_4
+	ck_assert_str_eq(add("III", "IV"), "VII");
+
+#test roman_numeral_calculator_add_5_plus_5
+	ck_assert_str_eq(add("V", "V"), "X");

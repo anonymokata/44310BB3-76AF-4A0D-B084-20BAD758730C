@@ -8,7 +8,7 @@
 #line 1 "roman-numeral-calculator-test.check"
 #include "roman-numeral-calculator.h"
 
-START_TEST(roman_numeral_calculator_add_one_plus_one)
+START_TEST(roman_numeral_calculator_add_1_plus_1)
 {
 #line 4
 	ck_assert_str_eq(add("I", "I"), "II");
@@ -16,7 +16,7 @@ START_TEST(roman_numeral_calculator_add_one_plus_one)
 }
 END_TEST
 
-START_TEST(roman_numeral_calculator_add_one_plus_two)
+START_TEST(roman_numeral_calculator_add_1_plus_2)
 {
 #line 7
 	ck_assert_str_eq(add("I", "II"), "III");
@@ -24,7 +24,7 @@ START_TEST(roman_numeral_calculator_add_one_plus_two)
 }
 END_TEST
 
-START_TEST(roman_numeral_calculator_add_two_plus_two)
+START_TEST(roman_numeral_calculator_add_2_plus_2)
 {
 #line 10
 	ck_assert_str_eq(add("II", "II"), "IV");
@@ -32,7 +32,7 @@ START_TEST(roman_numeral_calculator_add_two_plus_two)
 }
 END_TEST
 
-START_TEST(roman_numeral_calculator_add_two_plus_three)
+START_TEST(roman_numeral_calculator_add_2_plus_3)
 {
 #line 13
 	ck_assert_str_eq(add("II", "III"), "V");
@@ -40,7 +40,7 @@ START_TEST(roman_numeral_calculator_add_two_plus_three)
 }
 END_TEST
 
-START_TEST(roman_numeral_calculator_add_three_plus_three)
+START_TEST(roman_numeral_calculator_add_3_plus_3)
 {
 #line 16
 	ck_assert_str_eq(add("III", "III"), "VI");
@@ -48,10 +48,26 @@ START_TEST(roman_numeral_calculator_add_three_plus_three)
 }
 END_TEST
 
-START_TEST(roman_numeral_calculator_add_four_plus_three)
+START_TEST(roman_numeral_calculator_add_4_plus_3)
 {
 #line 19
 	ck_assert_str_eq(add("IV", "III"), "VII");
+
+}
+END_TEST
+
+START_TEST(roman_numeral_calculator_add_3_plus_4)
+{
+#line 22
+	ck_assert_str_eq(add("III", "IV"), "VII");
+
+}
+END_TEST
+
+START_TEST(roman_numeral_calculator_add_5_plus_5)
+{
+#line 25
+	ck_assert_str_eq(add("V", "V"), "X");
 }
 END_TEST
 
@@ -63,12 +79,14 @@ int main(void)
     int nf;
 
     suite_add_tcase(s1, tc1_1);
-    tcase_add_test(tc1_1, roman_numeral_calculator_add_one_plus_one);
-    tcase_add_test(tc1_1, roman_numeral_calculator_add_one_plus_two);
-    tcase_add_test(tc1_1, roman_numeral_calculator_add_two_plus_two);
-    tcase_add_test(tc1_1, roman_numeral_calculator_add_two_plus_three);
-    tcase_add_test(tc1_1, roman_numeral_calculator_add_three_plus_three);
-    tcase_add_test(tc1_1, roman_numeral_calculator_add_four_plus_three);
+    tcase_add_test(tc1_1, roman_numeral_calculator_add_1_plus_1);
+    tcase_add_test(tc1_1, roman_numeral_calculator_add_1_plus_2);
+    tcase_add_test(tc1_1, roman_numeral_calculator_add_2_plus_2);
+    tcase_add_test(tc1_1, roman_numeral_calculator_add_2_plus_3);
+    tcase_add_test(tc1_1, roman_numeral_calculator_add_3_plus_3);
+    tcase_add_test(tc1_1, roman_numeral_calculator_add_4_plus_3);
+    tcase_add_test(tc1_1, roman_numeral_calculator_add_3_plus_4);
+    tcase_add_test(tc1_1, roman_numeral_calculator_add_5_plus_5);
 
     srunner_run_all(sr, CK_ENV);
     nf = srunner_ntests_failed(sr);
