@@ -42,7 +42,7 @@ void tally_numerals(char* numerals) {
 void append_n_times(char* string, char *suffix, int n) {
 	int count;
 	for (count = 1; count <= n; count++) {
-		strcat(string, character);
+		strcat(string, suffix);
 	}	
 }
 
@@ -60,19 +60,9 @@ char* add(char* x, char* y) {
 		strcat(result, "I");
 	}
 
-	int count;
 	append_n_times(result, "X", x_count);
-	// for (count = 1; count <= x_count; count++) {
-	// 	strcat(result, "X");
-	// }
-
-	for (count = 1; count <= v_count; count++) {
-		strcat(result, "V");
-	}
-
-	for (count = 1; count <= i_count; count++) {
-		strcat(result, "I");
-	}
+	append_n_times(result, "V", v_count);
+	append_n_times(result, "I", i_count);
 
 	return result;
 }
