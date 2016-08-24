@@ -51,7 +51,7 @@ char* add(char* x, char* y) {
 	tally_numerals(x);
 	tally_numerals(y);
 
-	while (i_count >= 4) {
+	while (i_count >= 5) {
 		v_count++;
 		i_count -= 5;
 	}
@@ -66,15 +66,17 @@ char* add(char* x, char* y) {
 	char* result = malloc(v_count + i_count + 1);
 	strcpy(result, "");
 
-	if (i_count < 0 && v_count <= 0) {
-		strcat(result, "I");
-	}
 	append_n_times(result, "X", x_count);
-	if (i_count < 0 && v_count > 0) {
-		strcat(result, "I");
+	if (i_count == 4) {
+		if (v_count > 0) {
+			strcat(result, "IX");
+		} else {
+			strcat(result, "IV");
+		}
+	} else {
+		append_n_times(result, "V", v_count);
+		append_n_times(result, "I", i_count);
 	}
-	append_n_times(result, "V", v_count);
-	append_n_times(result, "I", i_count);
 
 	return result;
 }

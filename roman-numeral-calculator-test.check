@@ -41,3 +41,18 @@
 
 #test add_5_and_9
 	ck_assert_str_eq(add("V", "IX"), "XIV");
+
+#test add_10_and_5
+	ck_assert_str_eq(add("X", "V"), "XV");
+
+#test add_9_and_9
+	ck_assert_str_eq(add("IX", "IX"), "XVIII");
+
+#test add_10_and_9
+	ck_assert_str_eq(add("X", "IX"), "XIX");
+
+#test add_10_and_10
+	ck_assert_str_eq(add("X", "X"), "XX");
+
+#test add_16_and_19
+	ck_assert_str_eq(add("XVI", "XIX"), "XXXV");
