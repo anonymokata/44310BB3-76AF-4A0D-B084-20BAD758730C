@@ -3,13 +3,11 @@
 
 #include "roman-numeral-calculator.h"
 
-int c_count;
-int l_count;
-int x_count;
-int v_count;
-int i_count;
+struct Abacus {
+	int c, l, x, v, i;
+};
 
-void tally_numerals(char* numerals) {
+void tally_numerals(char* numerals, struct Abacus* abacus) {
 	int end;
 
 	end = strlen(numerals) - 1;
@@ -18,30 +16,30 @@ void tally_numerals(char* numerals) {
 	for (index = end; index >= 0; index--) {
 		if (numerals[index] == 'I') {
 			if (previous == 'X') {
-				x_count--;
-				i_count += 9;
+				abacus->x--;
+				abacus->i += 9;
 			} else if (previous == 'V') {
-				v_count--;
-				i_count += 4;
+				abacus->v--;
+				abacus->i += 4;
 			} else {
-				i_count++;
+				abacus->i++;
 			}
 		} else if (numerals[index] == 'V') {
-			v_count++;
+			abacus->v++;
 		} else if (numerals[index] == 'X') {
 			if (previous == 'C') {
-				c_count--;
-				x_count += 9;
+				abacus->c--;
+				abacus->x += 9;
 			} else if (previous == 'L') {
-				l_count--;
-				x_count += 4;
+				abacus->l--;
+				abacus->x += 4;
 			} else {
-				x_count++;
+				abacus->x++;
 			}
 		} else if (numerals[index] == 'L') {
-			l_count++;
+			abacus->l++;
 		} else if (numerals[index] == 'C') {
-			c_count++;
+			abacus->c++;
 		}
 
 		previous = numerals[index];
@@ -56,58 +54,54 @@ void append_n_times(char* string, char* suffix, int n) {
 }
 
 char* add(char* addend1, char* addend2) {
-	c_count = 0;
-	l_count = 0;
-	x_count = 0;
-	v_count = 0;
-	i_count = 0;
+	struct Abacus abacus = { 0, 0, 0, 0, 0 };
 
-	tally_numerals(addend1);
-	tally_numerals(addend2);
+	tally_numerals(addend1, &abacus);
+	tally_numerals(addend2, &abacus);
 
-	while (i_count >= 5) {
-		v_count++;
-		i_count -= 5;
+	while (abacus.i >= 5) {
+		abacus.v++;
+		abacus.i -= 5;
 	}
 
-	if (v_count >= 2) {
-		x_count++;
-		v_count -= 2;
+	if (abacus.v >= 2) {
+		abacus.x++;
+		abacus.v -= 2;
 	}
 
-	while (x_count >= 5) {
-		l_count++;
-		x_count -= 5;
+	while (abacus.x >= 5) {
+		abacus.l++;
+		abacus.x -= 5;
 	}
 
-	if (l_count >= 2) {
-		c_count++;
-		l_count -= 2;
+	if (abacus.l >= 2) {
+		abacus.c++;
+		abacus.l -= 2;
 	}
 
-	char* sum = malloc(v_count + i_count + 1);
+	char* sum = malloc(abacus.v + abacus.i + 1);
 	strcpy(sum, "");
 
-	append_n_times(sum, "C", c_count);
-	if (x_count == 4) {
-		if (l_count > 0) {
+	append_n_times(sum, "C", abacus.c);
+	if (abacus.x == 4) {
+		if (abacus.l > 0) {
 			strcat(sum, "XC");
 		} else {
 			strcat(sum, "XL");
 		}
 	} else {
-		append_n_times(sum, "L", l_count);
-		append_n_times(sum, "X", x_count);
+		append_n_times(sum, "L", abacus.l);
+		append_n_times(sum, "X", abacus.x);
 	}
-	if (i_count == 4) {
-		if (v_count > 0) {
+	if (abacus.i == 4) {
+		if (abacus.v > 0) {
 			strcat(sum, "IX");
 		} else {
 			strcat(sum, "IV");
 		}
 	} else {
-		append_n_times(sum, "V", v_count);
-		append_n_times(sum, "I", i_count);
+		append_n_times(sum, "V", abacus.v);
+		append_n_times(sum, "I", abacus.i);
 	}
 
 	return sum;
