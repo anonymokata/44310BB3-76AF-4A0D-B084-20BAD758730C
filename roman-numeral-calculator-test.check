@@ -56,3 +56,9 @@
 
 #test add_16_and_19
 	ck_assert_str_eq(add("XVI", "XIX"), "XXXV");
+
+#test add_20_and_20
+	ck_assert_str_eq(add("XX", "XX"), "XL");
+
+#test add_20_and_29
+	ck_assert_str_eq(add("XX", "XXIX"), "XLIX");

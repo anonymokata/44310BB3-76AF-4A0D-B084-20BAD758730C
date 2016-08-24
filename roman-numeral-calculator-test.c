@@ -156,6 +156,22 @@ START_TEST(add_16_and_19)
 {
 #line 58
 	ck_assert_str_eq(add("XVI", "XIX"), "XXXV");
+
+}
+END_TEST
+
+START_TEST(add_20_and_20)
+{
+#line 61
+	ck_assert_str_eq(add("XX", "XX"), "XL");
+
+}
+END_TEST
+
+START_TEST(add_20_and_29)
+{
+#line 64
+	ck_assert_str_eq(add("XX", "XXIX"), "XLIX");
 }
 END_TEST
 
@@ -186,6 +202,8 @@ int main(void)
     tcase_add_test(tc1_1, add_10_and_9);
     tcase_add_test(tc1_1, add_10_and_10);
     tcase_add_test(tc1_1, add_16_and_19);
+    tcase_add_test(tc1_1, add_20_and_20);
+    tcase_add_test(tc1_1, add_20_and_29);
 
     srunner_run_all(sr, CK_ENV);
     nf = srunner_ntests_failed(sr);

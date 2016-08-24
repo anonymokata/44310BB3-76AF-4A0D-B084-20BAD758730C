@@ -3,6 +3,7 @@
 
 #include "roman-numeral-calculator.h"
 
+int l_count;
 int x_count;
 int v_count;
 int i_count;
@@ -44,6 +45,7 @@ void append_n_times(char* string, char* suffix, int n) {
 
 char* add(char* x, char* y) {
 	printf("x : %s, y : %s\n", x, y);
+	l_count = 0;
 	x_count = 0;
 	v_count = 0;
 	i_count = 0;
@@ -66,7 +68,11 @@ char* add(char* x, char* y) {
 	char* result = malloc(v_count + i_count + 1);
 	strcpy(result, "");
 
-	append_n_times(result, "X", x_count);
+	if (x_count == 4) {
+		strcat(result, "XL");
+	} else {
+		append_n_times(result, "X", x_count);
+	}
 	if (i_count == 4) {
 		if (v_count > 0) {
 			strcat(result, "IX");
