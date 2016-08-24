@@ -208,11 +208,18 @@ START_TEST(add_50_and_38)
 }
 END_TEST
 
-START_TEST(add_50_and_50)
+START_TEST(add_50_and_40)
 {
 #line 79
+	ck_assert_str_eq(add("L", "XXXX"), "XC");
+
+}
+END_TEST
+
+START_TEST(add_50_and_50)
+{
+#line 82
 	ck_assert_str_eq(add("L", "L"), "C");
-	
 }
 END_TEST
 
@@ -249,6 +256,7 @@ int main(void)
     tcase_add_test(tc1_1, add_39_and_12);
     tcase_add_test(tc1_1, add_50_and_11);
     tcase_add_test(tc1_1, add_50_and_38);
+    tcase_add_test(tc1_1, add_50_and_40);
     tcase_add_test(tc1_1, add_50_and_50);
 
     srunner_run_all(sr, CK_ENV);

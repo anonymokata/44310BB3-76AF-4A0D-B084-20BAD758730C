@@ -75,6 +75,8 @@
 #test add_50_and_38
 	ck_assert_str_eq(add("L", "XXXVIII"), "LXXXVIII");
 
+#test add_50_and_40
+	ck_assert_str_eq(add("L", "XXXX"), "XC");
+
 #test add_50_and_50
 	ck_assert_str_eq(add("L", "L"), "C");
-	

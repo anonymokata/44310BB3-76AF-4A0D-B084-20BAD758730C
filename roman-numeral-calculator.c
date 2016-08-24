@@ -86,10 +86,14 @@ char* add(char* addend1, char* addend2) {
 	strcpy(sum, "");
 
 	append_n_times(sum, "C", c_count);
-	append_n_times(sum, "L", l_count);
 	if (x_count == 4) {
-		strcat(sum, "XL");
+		if (l_count > 0) {
+			strcat(sum, "XC");
+		} else {
+			strcat(sum, "XL");
+		}
 	} else {
+		append_n_times(sum, "L", l_count);
 		append_n_times(sum, "X", x_count);
 	}
 	if (i_count == 4) {
