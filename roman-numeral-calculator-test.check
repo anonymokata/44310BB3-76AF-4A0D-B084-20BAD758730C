@@ -29,3 +29,15 @@
 
 #test add_5_and_6
 	ck_assert_str_eq(add("V", "VI"), "XI");
+
+#test add_10_and_1
+	ck_assert_str_eq(add("X", "I"), "XI");
+
+#test add_11_and_2
+	ck_assert_str_eq(add("IX", "II"), "XI");
+
+#test add_8_and_4
+	ck_assert_str_eq(add("VIII", "IV"), "XII");
+
+#test add_5_and_9
+	ck_assert_str_eq(add("V", "IX"), "XIV");

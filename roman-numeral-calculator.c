@@ -15,7 +15,10 @@ void tally_numerals(char* numerals) {
 	int index;
 	for (index = end; index >= 0; index--) {
 		if (numerals[index] == 'I') {
-			if (previous == 'V') {
+			if (previous == 'X') {
+				x_count--;
+				i_count += 9;
+			} else if (previous == 'V') {
 				v_count--;
 				i_count += 4;
 			} else {
@@ -23,19 +26,12 @@ void tally_numerals(char* numerals) {
 			}
 		} else if (numerals[index] == 'V') {
 			v_count++;
+		} else if (numerals[index] == 'X') {
+			x_count++;
 		}
+		printf("char : %c, x : %d, v : %d, i : %d\n", numerals[index], x_count, v_count, i_count);
 
 		previous = numerals[index];
-	}
-
-	if (i_count >= 4) {
-		v_count++;
-		i_count -= 5;
-	}
-
-	if (v_count >= 2) {
-		x_count++;
-		v_count -= 2;
 	}
 }
 
@@ -47,6 +43,7 @@ void append_n_times(char* string, char* suffix, int n) {
 }
 
 char* add(char* x, char* y) {
+	printf("x : %s, y : %s\n", x, y);
 	x_count = 0;
 	v_count = 0;
 	i_count = 0;
@@ -54,13 +51,28 @@ char* add(char* x, char* y) {
 	tally_numerals(x);
 	tally_numerals(y);
 
+	while (i_count >= 4) {
+		v_count++;
+		i_count -= 5;
+	}
+	printf("x : %d, v : %d, i : %d\n", x_count, v_count, i_count);
+
+	if (v_count >= 2) {
+		x_count++;
+		v_count -= 2;
+	}
+	printf("x : %d, v : %d, i : %d\n", x_count, v_count, i_count);
+
 	char* result = malloc(v_count + i_count + 1);
 	strcpy(result, "");
-	if (i_count < 0) {
+
+	if (i_count < 0 && v_count <= 0) {
 		strcat(result, "I");
 	}
-
 	append_n_times(result, "X", x_count);
+	if (i_count < 0 && v_count > 0) {
+		strcat(result, "I");
+	}
 	append_n_times(result, "V", v_count);
 	append_n_times(result, "I", i_count);
 
