@@ -45,15 +45,15 @@ void append_n_times(char* string, char* suffix, int n) {
 	}	
 }
 
-char* add(char* x, char* y) {
-	printf("x : %s, y : %s\n", x, y);
+char* add(char* addend1, char* addend2) {
+	printf("addend1 : %s, addend2 : %s\n", addend1, addend2);
 	l_count = 0;
 	x_count = 0;
 	v_count = 0;
 	i_count = 0;
 
-	tally_numerals(x);
-	tally_numerals(y);
+	tally_numerals(addend1);
+	tally_numerals(addend2);
 
 	while (i_count >= 5) {
 		v_count++;
@@ -67,25 +67,25 @@ char* add(char* x, char* y) {
 	}
 	printf("x : %d, v : %d, i : %d\n", x_count, v_count, i_count);
 
-	char* result = malloc(v_count + i_count + 1);
-	strcpy(result, "");
+	char* sum = malloc(v_count + i_count + 1);
+	strcpy(sum, "");
 
-	append_n_times(result, "L", l_count);
+	append_n_times(sum, "L", l_count);
 	if (x_count == 4) {
-		strcat(result, "XL");
+		strcat(sum, "XL");
 	} else {
-		append_n_times(result, "X", x_count);
+		append_n_times(sum, "X", x_count);
 	}
 	if (i_count == 4) {
 		if (v_count > 0) {
-			strcat(result, "IX");
+			strcat(sum, "IX");
 		} else {
-			strcat(result, "IV");
+			strcat(sum, "IV");
 		}
 	} else {
-		append_n_times(result, "V", v_count);
-		append_n_times(result, "I", i_count);
+		append_n_times(sum, "V", v_count);
+		append_n_times(sum, "I", i_count);
 	}
 
-	return result;
+	return sum;
 }
