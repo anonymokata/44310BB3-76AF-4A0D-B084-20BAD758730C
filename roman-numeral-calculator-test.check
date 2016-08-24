@@ -81,5 +81,8 @@
 #test add_50_and_50
 	ck_assert_str_eq(add("L", "L"), "C");
 
-#test add_49_and_50
-	ck_assert_str_eq(add("XLIX", "L"), "XCIX");
+#test add_12_and_89
+	ck_assert_str_eq(add("XII", "LXXXIX"), "CI");
+
+#test add_100_and_13
+	ck_assert_str_eq(add("C", "XIII"), "CXIII");

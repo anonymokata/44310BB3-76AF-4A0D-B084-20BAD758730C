@@ -37,6 +37,8 @@ void tally_numerals(char* numerals) {
 			}
 		} else if (numerals[index] == 'L') {
 			l_count++;
+		} else if (numerals[index] == 'C') {
+			c_count++;
 		}
 		printf("char : %c, x : %d, v : %d, i : %d\n", numerals[index], x_count, v_count, i_count);
 

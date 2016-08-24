@@ -220,6 +220,22 @@ START_TEST(add_50_and_50)
 {
 #line 82
 	ck_assert_str_eq(add("L", "L"), "C");
+
+}
+END_TEST
+
+START_TEST(add_12_and_89)
+{
+#line 85
+	ck_assert_str_eq(add("XII", "LXXXIX"), "CI");
+
+}
+END_TEST
+
+START_TEST(add_100_and_13)
+{
+#line 88
+	ck_assert_str_eq(add("C", "XIII"), "CXIII");
 }
 END_TEST
 
@@ -258,6 +274,8 @@ int main(void)
     tcase_add_test(tc1_1, add_50_and_38);
     tcase_add_test(tc1_1, add_50_and_40);
     tcase_add_test(tc1_1, add_50_and_50);
+    tcase_add_test(tc1_1, add_12_and_89);
+    tcase_add_test(tc1_1, add_100_and_13);
 
     srunner_run_all(sr, CK_ENV);
     nf = srunner_ntests_failed(sr);
