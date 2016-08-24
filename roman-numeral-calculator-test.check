@@ -80,3 +80,6 @@
 
 #test add_50_and_50
 	ck_assert_str_eq(add("L", "L"), "C");
+
+#test add_49_and_50
+	ck_assert_str_eq(add("XLIX", "L"), "XCIX");
