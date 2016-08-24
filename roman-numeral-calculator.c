@@ -29,7 +29,10 @@ void tally_numerals(char* numerals) {
 		} else if (numerals[index] == 'V') {
 			v_count++;
 		} else if (numerals[index] == 'X') {
-			if (previous == 'L') {
+			if (previous == 'C') {
+				c_count--;
+				x_count += 9;
+			} else if (previous == 'L') {
 				l_count--;
 				x_count += 4;
 			} else {
@@ -40,7 +43,6 @@ void tally_numerals(char* numerals) {
 		} else if (numerals[index] == 'C') {
 			c_count++;
 		}
-		printf("char : %c, x : %d, v : %d, i : %d\n", numerals[index], x_count, v_count, i_count);
 
 		previous = numerals[index];
 	}
@@ -54,7 +56,6 @@ void append_n_times(char* string, char* suffix, int n) {
 }
 
 char* add(char* addend1, char* addend2) {
-	printf("addend1 : %s, addend2 : %s\n", addend1, addend2);
 	c_count = 0;
 	l_count = 0;
 	x_count = 0;
@@ -74,7 +75,7 @@ char* add(char* addend1, char* addend2) {
 		v_count -= 2;
 	}
 
-	if (x_count >= 5) {
+	while (x_count >= 5) {
 		l_count++;
 		x_count -= 5;
 	}
