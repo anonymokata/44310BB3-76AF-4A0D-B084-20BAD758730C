@@ -29,6 +29,8 @@ void tally_numerals(char* numerals) {
 			v_count++;
 		} else if (numerals[index] == 'X') {
 			x_count++;
+		} else if (numerals[index] == 'L') {
+			l_count++;
 		}
 		printf("char : %c, x : %d, v : %d, i : %d\n", numerals[index], x_count, v_count, i_count);
 
@@ -68,6 +70,7 @@ char* add(char* x, char* y) {
 	char* result = malloc(v_count + i_count + 1);
 	strcpy(result, "");
 
+	append_n_times(result, "L", l_count);
 	if (x_count == 4) {
 		strcat(result, "XL");
 	} else {
