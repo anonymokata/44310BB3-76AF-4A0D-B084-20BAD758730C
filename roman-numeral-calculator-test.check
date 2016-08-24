@@ -63,5 +63,18 @@
 #test add_20_and_29
 	ck_assert_str_eq(add("XX", "XXIX"), "XLIX");
 
+#test add_40_and_10
+	ck_assert_str_eq(add("XL", "X"), "L");
+
+#test add_39_and_12
+	ck_assert_str_eq(add("XXXIX", "XII"), "LI");
+
 #test add_50_and_11
 	ck_assert_str_eq(add("L", "XI"), "LXI");
+
+#test add_50_and_38
+	ck_assert_str_eq(add("L", "XXXVIII"), "LXXXVIII");
+
+#test add_50_and_50
+	ck_assert_str_eq(add("L", "L"), "C");
+	

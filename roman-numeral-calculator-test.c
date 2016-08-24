@@ -176,10 +176,43 @@ START_TEST(add_20_and_29)
 }
 END_TEST
 
-START_TEST(add_50_and_11)
+START_TEST(add_40_and_10)
 {
 #line 67
+	ck_assert_str_eq(add("XL", "X"), "L");
+
+}
+END_TEST
+
+START_TEST(add_39_and_12)
+{
+#line 70
+	ck_assert_str_eq(add("XXXIX", "XII"), "LI");
+
+}
+END_TEST
+
+START_TEST(add_50_and_11)
+{
+#line 73
 	ck_assert_str_eq(add("L", "XI"), "LXI");
+
+}
+END_TEST
+
+START_TEST(add_50_and_38)
+{
+#line 76
+	ck_assert_str_eq(add("L", "XXXVIII"), "LXXXVIII");
+
+}
+END_TEST
+
+START_TEST(add_50_and_50)
+{
+#line 79
+	ck_assert_str_eq(add("L", "L"), "C");
+	
 }
 END_TEST
 
@@ -212,7 +245,11 @@ int main(void)
     tcase_add_test(tc1_1, add_16_and_19);
     tcase_add_test(tc1_1, add_20_and_20);
     tcase_add_test(tc1_1, add_20_and_29);
+    tcase_add_test(tc1_1, add_40_and_10);
+    tcase_add_test(tc1_1, add_39_and_12);
     tcase_add_test(tc1_1, add_50_and_11);
+    tcase_add_test(tc1_1, add_50_and_38);
+    tcase_add_test(tc1_1, add_50_and_50);
 
     srunner_run_all(sr, CK_ENV);
     nf = srunner_ntests_failed(sr);

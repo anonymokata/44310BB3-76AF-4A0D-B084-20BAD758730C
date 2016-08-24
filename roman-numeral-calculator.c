@@ -3,6 +3,7 @@
 
 #include "roman-numeral-calculator.h"
 
+int c_count;
 int l_count;
 int x_count;
 int v_count;
@@ -28,7 +29,12 @@ void tally_numerals(char* numerals) {
 		} else if (numerals[index] == 'V') {
 			v_count++;
 		} else if (numerals[index] == 'X') {
-			x_count++;
+			if (previous == 'L') {
+				l_count--;
+				x_count += 4;
+			} else {
+				x_count++;
+			}
 		} else if (numerals[index] == 'L') {
 			l_count++;
 		}
@@ -47,6 +53,7 @@ void append_n_times(char* string, char* suffix, int n) {
 
 char* add(char* addend1, char* addend2) {
 	printf("addend1 : %s, addend2 : %s\n", addend1, addend2);
+	c_count = 0;
 	l_count = 0;
 	x_count = 0;
 	v_count = 0;
@@ -59,17 +66,26 @@ char* add(char* addend1, char* addend2) {
 		v_count++;
 		i_count -= 5;
 	}
-	printf("x : %d, v : %d, i : %d\n", x_count, v_count, i_count);
 
 	if (v_count >= 2) {
 		x_count++;
 		v_count -= 2;
 	}
-	printf("x : %d, v : %d, i : %d\n", x_count, v_count, i_count);
+
+	if (x_count >= 5) {
+		l_count++;
+		x_count -= 5;
+	}
+
+	if (l_count >= 2) {
+		c_count++;
+		l_count -= 2;
+	}
 
 	char* sum = malloc(v_count + i_count + 1);
 	strcpy(sum, "");
 
+	append_n_times(sum, "C", c_count);
 	append_n_times(sum, "L", l_count);
 	if (x_count == 4) {
 		strcat(sum, "XL");
