@@ -107,3 +107,6 @@
 
 #test add_400_and_100
 	ck_assert_str_eq(add("CD", "C"), "D");
+
+#test add_400_and_500
+	ck_assert_str_eq(add("CD", "D"), "CM");

@@ -102,7 +102,11 @@ char* add(char* addend1, char* addend2) {
 
 	if (abacus.c == 4) {
 		set_char_and_increment(sum, 'C', &index);
-		set_char_and_increment(sum, 'D', &index);
+		if (abacus.d > 0) {
+			set_char_and_increment(sum, 'M', &index);
+		} else {
+			set_char_and_increment(sum, 'D', &index);
+		}
 	} else {
 		set_char_and_increment_n_times(sum, 'D', &index, abacus.d);
 		set_char_and_increment_n_times(sum, 'C', &index, abacus.c);
