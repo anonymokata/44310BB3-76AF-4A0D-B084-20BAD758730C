@@ -110,3 +110,6 @@
 
 #test add_400_and_500
 	ck_assert_str_eq(add("CD", "D"), "CM");
+
+#test add_499_and_499
+	ck_assert_str_eq(add("CDXCIX", "CDXCIX"), "CMXCVIII");
