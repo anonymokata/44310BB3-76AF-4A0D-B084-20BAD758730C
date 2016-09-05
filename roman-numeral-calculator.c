@@ -88,7 +88,13 @@ char* add(char* addend1, char* addend2) {
 	char* sum = malloc(abacus.c + abacus.l + abacus.x + abacus.v + abacus.i + 1);
 	int index = 0;
 
-	set_char_and_increment_n_times(sum, 'C', &index, abacus.c);
+	if (abacus.c == 4) {
+		set_char_and_increment(sum, 'C', &index);
+		set_char_and_increment(sum, 'D', &index);
+	} else {
+		set_char_and_increment_n_times(sum, 'C', &index, abacus.c);
+	}
+
 	if (abacus.x == 4) {
 		set_char_and_increment(sum, 'X', &index);
 		if (abacus.l > 0) {

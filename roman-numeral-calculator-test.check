@@ -91,4 +91,10 @@
 	ck_assert_str_eq(add("XXX", "XC"), "CXX");
 
 #test add_99_and_99
-	ck_assert_str_eq(add("XXX", "XC"), "CXX");
+	ck_assert_str_eq(add("XCIX", "XCIX"), "CXCVIII");
+
+#test add_201_and_198
+	ck_assert_str_eq(add("CCI", "CXCVIII"), "CCCXCIX");
+
+#test add_200_and_200
+	ck_assert_str_eq(add("CC", "CC"), "CD");
