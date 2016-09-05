@@ -96,5 +96,11 @@
 #test add_201_and_198
 	ck_assert_str_eq(add("CCI", "CXCVIII"), "CCCXCIX");
 
+#test add_200_and_200
+	ck_assert_str_eq(add("CC", "CC"), "CD");
+
 #test add_300_and_200
 	ck_assert_str_eq(add("CCC", "CC"), "D");
+
+#test add_500_and_1
+	ck_assert_str_eq(add("D", "I"), "DI");

@@ -40,6 +40,8 @@ void tally_numerals(char* numerals, struct Abacus* abacus) {
 			abacus->l++;
 		} else if (numerals[index] == 'C') {
 			abacus->c++;
+		} else if (numerals[index] == 'D') {
+			abacus->d++;
 		}
 
 		previous = numerals[index];
