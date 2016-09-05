@@ -104,3 +104,6 @@
 
 #test add_500_and_1
 	ck_assert_str_eq(add("D", "I"), "DI");
+
+#test add_400_and_100
+	ck_assert_str_eq(add("CD", "C"), "D");

@@ -39,7 +39,12 @@ void tally_numerals(char* numerals, struct Abacus* abacus) {
 		} else if (numerals[index] == 'L') {
 			abacus->l++;
 		} else if (numerals[index] == 'C') {
-			abacus->c++;
+			if (previous == 'D') {
+				abacus->d--;
+				abacus->c += 4;
+			} else {
+				abacus->c++;
+			}
 		} else if (numerals[index] == 'D') {
 			abacus->d++;
 		}
