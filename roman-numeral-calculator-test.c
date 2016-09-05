@@ -332,6 +332,22 @@ START_TEST(add_999_and_2)
 {
 #line 124
 	ck_assert_str_eq(add("CMXCIX", "II"), "MI");
+
+}
+END_TEST
+
+START_TEST(add_1000_and_1000)
+{
+#line 127
+	ck_assert_str_eq(add("M", "M"), "MM");
+
+}
+END_TEST
+
+START_TEST(add_1500_and_2499)
+{
+#line 130
+	ck_assert_str_eq(add("MD", "MMCDXCIX"), "MMMCMXCIX");
 }
 END_TEST
 
@@ -384,6 +400,8 @@ int main(void)
     tcase_add_test(tc1_1, add_500_and_500);
     tcase_add_test(tc1_1, add_1000_and_1);
     tcase_add_test(tc1_1, add_999_and_2);
+    tcase_add_test(tc1_1, add_1000_and_1000);
+    tcase_add_test(tc1_1, add_1500_and_2499);
 
     srunner_run_all(sr, CK_ENV);
     nf = srunner_ntests_failed(sr);

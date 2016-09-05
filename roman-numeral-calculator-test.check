@@ -122,3 +122,9 @@
 
 #test add_999_and_2
 	ck_assert_str_eq(add("CMXCIX", "II"), "MI");
+
+#test add_1000_and_1000
+	ck_assert_str_eq(add("M", "M"), "MM");
+
+#test add_1500_and_2499
+	ck_assert_str_eq(add("MD", "MMCDXCIX"), "MMMCMXCIX");
