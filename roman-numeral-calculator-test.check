@@ -89,3 +89,6 @@
 
 #test add_30_and_90
 	ck_assert_str_eq(add("XXX", "XC"), "CXX");
+
+#test add_99_and_99
+	ck_assert_str_eq(add("XXX", "XC"), "CXX");
