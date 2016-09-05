@@ -4,14 +4,14 @@
 #include "roman-numeral-calculator.h"
 
 struct Abacus {
-	int c, l, x, v, i;
+	int d, c, l, x, v, i;
 };
 
 void tally_numerals(char* numerals, struct Abacus* abacus) {
 	int end;
 
 	end = strlen(numerals) - 1;
-	char previous = '\0';
+	char previous = NULL;
 	int index;
 	for (index = end; index >= 0; index--) {
 		if (numerals[index] == 'I') {
@@ -60,7 +60,7 @@ void set_char_and_increment_n_times(char* string, char character, int* index, in
 }
 
 char* add(char* addend1, char* addend2) {
-	struct Abacus abacus = { 0, 0, 0, 0, 0 };
+	struct Abacus abacus = { 0, 0, 0, 0, 0, 0 };
 
 	tally_numerals(addend1, &abacus);
 	tally_numerals(addend2, &abacus);
@@ -85,6 +85,11 @@ char* add(char* addend1, char* addend2) {
 		abacus.l -= 2;
 	}
 
+	if (abacus.c >= 5) {
+		abacus.d++;
+		abacus.c -= 5;
+	}
+
 	char* sum = malloc(abacus.c + abacus.l + abacus.x + abacus.v + abacus.i + 1);
 	int index = 0;
 
@@ -92,6 +97,7 @@ char* add(char* addend1, char* addend2) {
 		set_char_and_increment(sum, 'C', &index);
 		set_char_and_increment(sum, 'D', &index);
 	} else {
+		set_char_and_increment_n_times(sum, 'D', &index, abacus.d);
 		set_char_and_increment_n_times(sum, 'C', &index, abacus.c);
 	}
 
