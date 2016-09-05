@@ -116,3 +116,9 @@
 
 #test add_500_and_500
 	ck_assert_str_eq(add("D", "D"), "M");
+
+#test add_1000_and_1
+	ck_assert_str_eq(add("M", "I"), "MI");
+
+#test add_999_and_2
+	ck_assert_str_eq(add("CMXCIX", "II"), "MI");

@@ -39,7 +39,10 @@ void tally_numerals(char* numerals, struct Abacus* abacus) {
 		} else if (numerals[index] == 'L') {
 			abacus->l++;
 		} else if (numerals[index] == 'C') {
-			if (previous == 'D') {
+			if (previous == 'M') {
+				abacus->m--;
+				abacus->c += 9;
+			} else if (previous == 'D') {
 				abacus->d--;
 				abacus->c += 4;
 			} else {
@@ -47,6 +50,8 @@ void tally_numerals(char* numerals, struct Abacus* abacus) {
 			}
 		} else if (numerals[index] == 'D') {
 			abacus->d++;
+		} else if (numerals[index] == 'M') {
+			abacus->m++;
 		}
 
 		previous = numerals[index];
@@ -92,7 +97,7 @@ char* add(char* addend1, char* addend2) {
 		abacus.l -= 2;
 	}
 
-	if (abacus.c >= 5) {
+	while (abacus.c >= 5) {
 		abacus.d++;
 		abacus.c -= 5;
 	}
