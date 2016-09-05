@@ -3,18 +3,55 @@
 
 #include "roman-numeral-calculator.h"
 
+struct Wire {
+	char character;
+	int count;
+};
+
 struct Abacus {
+	struct Wire wires[7];
 	int m, d, c, l, x, v, i;
 };
+
+struct Abacus initialize_abacus(void) {
+	struct Abacus abacus = {
+		{
+			{ 'I', 0 },
+			{ 'V', 0 },
+			{ 'X', 0 },
+			{ 'L', 0 },
+			{ 'C', 0 },
+			{ 'D', 0 },
+			{ 'M', 0 }
+		},
+		0, 0, 0, 0, 0, 0, 0
+	};
+
+	return abacus;
+}
+
+struct Wire* get_wire(char character, struct Abacus* abacus) {
+	int index;
+
+	for (index = 0; index < sizeof(abacus->wires); index++) {
+		if (character == abacus->wires[index].character) {
+			return &abacus->wires[index];
+		}
+	}
+
+	return NULL;
+}
 
 void tally_numerals(char* numerals, struct Abacus* abacus) {
 	int end;
 
 	end = strlen(numerals) - 1;
+	char current = NULL;
 	char previous = NULL;
 	int index;
 	for (index = end; index >= 0; index--) {
-		if (numerals[index] == 'I') {
+		current = numerals[index];
+		if (current == 'I') {
 			if (previous == 'X') {
 				abacus->x--;
 				abacus->i += 9;
@@ -24,9 +61,9 @@ void tally_numerals(char* numerals, struct Abacus* abacus) {
 			} else {
 				abacus->i++;
 			}
-		} else if (numerals[index] == 'V') {
+		} else if (current == 'V') {
 			abacus->v++;
-		} else if (numerals[index] == 'X') {
+		} else if (current == 'X') {
 			if (previous == 'C') {
 				abacus->c--;
 				abacus->x += 9;
@@ -36,9 +73,9 @@ void tally_numerals(char* numerals, struct Abacus* abacus) {
 			} else {
 				abacus->x++;
 			}
-		} else if (numerals[index] == 'L') {
+		} else if (current == 'L') {
 			abacus->l++;
-		} else if (numerals[index] == 'C') {
+		} else if (current == 'C') {
 			if (previous == 'M') {
 				abacus->m--;
 				abacus->c += 9;
@@ -48,13 +85,13 @@ void tally_numerals(char* numerals, struct Abacus* abacus) {
 			} else {
 				abacus->c++;
 			}
-		} else if (numerals[index] == 'D') {
+		} else if (current == 'D') {
 			abacus->d++;
-		} else if (numerals[index] == 'M') {
+		} else if (current == 'M') {
 			abacus->m++;
 		}
 
-		previous = numerals[index];
+		previous = current;
 	}
 }
 
@@ -72,7 +109,7 @@ void set_char_and_increment_n_times(char* string, char character, int* index, in
 }
 
 char* add(char* addend1, char* addend2) {
-	struct Abacus abacus = { 0, 0, 0, 0, 0, 0, 0 };
+	struct Abacus abacus = initialize_abacus();
 
 	tally_numerals(addend1, &abacus);
 	tally_numerals(addend2, &abacus);
