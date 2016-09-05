@@ -46,10 +46,16 @@ void tally_numerals(char* numerals, struct Abacus* abacus) {
 	}
 }
 
-void append_n_times(char* string, char* suffix, int n) {
+void set_char_and_increment(char* string, char character, int* index) {
+	// printf("string : %s, character : %c, index : %d\n", string, character, *index);
+	string[*index] = character;
+	(*index)++;
+}
+
+void set_char_and_increment_n_times(char* string, char character, int* index, int n) {
 	int count;
-	for (count = 1; count <= n; count++) {
-		strcat(string, suffix);
+	for (count = 0; count < n; count++) {
+		set_char_and_increment(string, character, index);
 	}	
 }
 
@@ -79,30 +85,35 @@ char* add(char* addend1, char* addend2) {
 		abacus.l -= 2;
 	}
 
-	char* sum = malloc(abacus.v + abacus.i + 1);
-	strcpy(sum, "");
+	char* sum = malloc(abacus.c + abacus.l + abacus.x + abacus.v + abacus.i + 1);
+	int index = 0;
 
-	append_n_times(sum, "C", abacus.c);
+	set_char_and_increment_n_times(sum, 'C', &index, abacus.c);
 	if (abacus.x == 4) {
+		set_char_and_increment(sum, 'X', &index);
 		if (abacus.l > 0) {
-			strcat(sum, "XC");
+			set_char_and_increment(sum, 'C', &index);
 		} else {
-			strcat(sum, "XL");
+			set_char_and_increment(sum, 'L', &index);
 		}
 	} else {
-		append_n_times(sum, "L", abacus.l);
-		append_n_times(sum, "X", abacus.x);
+		set_char_and_increment_n_times(sum, 'L', &index, abacus.l);
+		set_char_and_increment_n_times(sum, 'X', &index, abacus.x);
 	}
+
 	if (abacus.i == 4) {
+		set_char_and_increment(sum, 'I', &index);
 		if (abacus.v > 0) {
-			strcat(sum, "IX");
+			set_char_and_increment(sum, 'X', &index);
 		} else {
-			strcat(sum, "IV");
+			set_char_and_increment(sum, 'V', &index);
 		}
 	} else {
-		append_n_times(sum, "V", abacus.v);
-		append_n_times(sum, "I", abacus.i);
+		set_char_and_increment_n_times(sum, 'V', &index, abacus.v);
+		set_char_and_increment_n_times(sum, 'I', &index, abacus.i);
 	}
+
+	sum[index] = '\0';
 
 	return sum;
 }
