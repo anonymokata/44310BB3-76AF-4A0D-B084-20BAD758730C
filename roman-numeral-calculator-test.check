@@ -113,3 +113,6 @@
 
 #test add_499_and_499
 	ck_assert_str_eq(add("CDXCIX", "CDXCIX"), "CMXCVIII");
+
+#test add_500_and_500
+	ck_assert_str_eq(add("D", "D"), "M");

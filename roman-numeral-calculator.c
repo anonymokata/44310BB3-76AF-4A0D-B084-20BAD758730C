@@ -4,7 +4,7 @@
 #include "roman-numeral-calculator.h"
 
 struct Abacus {
-	int d, c, l, x, v, i;
+	int m, d, c, l, x, v, i;
 };
 
 void tally_numerals(char* numerals, struct Abacus* abacus) {
@@ -67,7 +67,7 @@ void set_char_and_increment_n_times(char* string, char character, int* index, in
 }
 
 char* add(char* addend1, char* addend2) {
-	struct Abacus abacus = { 0, 0, 0, 0, 0, 0 };
+	struct Abacus abacus = { 0, 0, 0, 0, 0, 0, 0 };
 
 	tally_numerals(addend1, &abacus);
 	tally_numerals(addend2, &abacus);
@@ -97,8 +97,15 @@ char* add(char* addend1, char* addend2) {
 		abacus.c -= 5;
 	}
 
+	if (abacus.d >= 2) {
+		abacus.m++;
+		abacus.d -= 2;
+	}
+
 	char* sum = malloc(abacus.c + abacus.l + abacus.x + abacus.v + abacus.i + 1);
 	int index = 0;
+
+	set_char_and_increment_n_times(sum, 'M', &index, abacus.m);
 
 	if (abacus.c == 4) {
 		set_char_and_increment(sum, 'C', &index);
