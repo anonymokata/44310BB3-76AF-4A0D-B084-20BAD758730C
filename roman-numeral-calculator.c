@@ -3,7 +3,7 @@
 
 #include "roman-numeral-calculator.h"
 
-#define abacus_rows 7
+#define abacus_row_count 7
 
 struct Row {
 	char symbol;
@@ -11,7 +11,7 @@ struct Row {
 };
 
 struct Abacus {
-	struct Row rows[abacus_rows];
+	struct Row rows[abacus_row_count];
 };
 
 struct Abacus initialize_abacus(void) {
@@ -30,10 +30,14 @@ struct Abacus initialize_abacus(void) {
 	return abacus;
 }
 
+int is_even(int number) {
+	return number % 2 == 0 ? 1 : 0;
+}
+
 int get_abacus_index(char symbol, struct Abacus* abacus) {
 	int index;
 
-	for (index = 0; index < abacus_rows; index++) {
+	for (index = 0; index < abacus_row_count; index++) {
 		if (symbol == abacus->rows[index].symbol) {
 			return index;
 		}
@@ -46,23 +50,23 @@ void tally_numerals(char* input, struct Abacus* abacus) {
 	int input_index;
 	int end = strlen(input) - 1;
 	int abacus_index;
-	char previous = NULL;
+	char previous_symbol = NULL;
 
 	for (input_index = end; input_index >= 0; input_index--) {
 		abacus_index = get_abacus_index(input[input_index], abacus);
 
-		if (abacus_index == (abacus_rows - 1) || abacus_index % 2 != 0) {
+		if (abacus_index == (abacus_row_count - 1) || !is_even(abacus_index)) {
 
 			abacus->rows[abacus_index].count++;
 
 		} else {
 
-			if (previous == abacus->rows[abacus_index + 1].symbol) {
+			if (previous_symbol == abacus->rows[abacus_index + 1].symbol) {
 
 				abacus->rows[abacus_index + 1].count--;
 				abacus->rows[abacus_index].count += 4;
 
-			} else if (previous == abacus->rows[abacus_index + 2].symbol) {
+			} else if (previous_symbol == abacus->rows[abacus_index + 2].symbol) {
 
 				abacus->rows[abacus_index + 2].count--;
 				abacus->rows[abacus_index].count += 9;
@@ -72,7 +76,7 @@ void tally_numerals(char* input, struct Abacus* abacus) {
 			}
 		}
 
-		previous = input[input_index];
+		previous_symbol = input[input_index];
 	}
 }
 
@@ -80,8 +84,8 @@ void adjust_counts(struct Abacus* abacus) {
 	int index;
 	int ratio_to_next_row;
 
-	for (index = 0; index < abacus_rows - 1; index++) {
-		ratio_to_next_row = index % 2 == 0 ? 5 : 2;
+	for (index = 0; index < abacus_row_count - 1; index++) {
+		ratio_to_next_row = is_even(index) ? 5 : 2;
 
 		while (abacus->rows[index].count >= ratio_to_next_row) {
 			abacus->rows[index + 1].count++;
@@ -108,9 +112,9 @@ char* to_roman_numerals(struct Abacus* abacus) {
 	int result_index = 0;
 	int abacus_index;
 
-	for (abacus_index = abacus_rows - 1; abacus_index >= 0; abacus_index--) {
+	for (abacus_index = abacus_row_count - 1; abacus_index >= 0; abacus_index--) {
 
-		if (abacus_index % 2 != 0 && abacus->rows[abacus_index - 1].count == 4) {
+		if (!is_even(abacus_index) && abacus->rows[abacus_index - 1].count == 4) {
 
 			append(result, abacus->rows[abacus_index - 1].symbol, &result_index);
 
