@@ -81,19 +81,27 @@ void tally(char* input, struct Abacus* abacus) {
 }
 
 void subtractive_tally(char* input, struct Abacus* abacus) {
-	int length = strlen(input);
-	if ('V' == input[length - 1]) {
-		abacus->rows[1].count--;
-		if (length > 1 && 'I' == input[length - 2]) {
-			abacus->rows[0].count++;
-		}
-	} else {
-		if (abacus->rows[0].count <= length) {
+	int input_index;	
+	int end = strlen(input) - 1;	
+	char previous_symbol = NULL;
+
+	for (input_index = end; input_index >= 0; input_index--) {
+		if ('V' == input[input_index]) {
 			abacus->rows[1].count--;
-			abacus->rows[0].count += 5;
+		} else {
+			if ('V' == previous_symbol) {
+				abacus->rows[0].count++;
+			} else {
+				if (abacus->rows[0].count == 0) {
+					abacus->rows[1].count--;
+					abacus->rows[0].count += 5;
+				}
+				
+				abacus->rows[0].count--;
+			}
 		}
-		
-		abacus->rows[0].count -= strlen(input);
+
+		previous_symbol = input[input_index];
 	}
 }
 
