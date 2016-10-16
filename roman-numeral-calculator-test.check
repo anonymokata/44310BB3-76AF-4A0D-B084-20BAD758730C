@@ -128,3 +128,6 @@
 
 #test add_1500_and_2499
 	ck_assert_str_eq(add("MD", "MMCDXCIX"), "MMMCMXCIX");
+
+#test subtract_1_from_2
+	ck_assert_str_eq(subtract("II", "I"), "I");

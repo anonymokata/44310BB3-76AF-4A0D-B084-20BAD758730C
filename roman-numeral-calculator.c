@@ -151,3 +151,7 @@ char* add(char* addend1, char* addend2) {
 
 	return to_roman_numerals(&abacus);
 }
+
+char* subtract(char* minuend, char* subtrahend) {
+	return "I";
+}
