@@ -179,5 +179,7 @@ char* subtract(char* minuend, char* subtrahend) {
 	tally(minuend, &abacus);
 	subtractive_tally(subtrahend, &abacus);
 
+	adjust_counts(&abacus);
+
 	return to_roman_numerals(&abacus);
 }
