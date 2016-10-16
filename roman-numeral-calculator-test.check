@@ -138,6 +138,6 @@
 #test subtract_1_from_5
 	ck_assert_str_eq(subtract("V", "I"), "IV");
 
-#test subtract_4_from_5
-	ck_assert_str_eq(subtract("V", "IV"), "I");
+#test subtract_5_from_6
+	ck_assert_str_eq(subtract("VI", "V"), "I");
 
