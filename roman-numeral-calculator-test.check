@@ -131,3 +131,6 @@
 
 #test subtract_1_from_2
 	ck_assert_str_eq(subtract("II", "I"), "I");
+
+#test subtract_1_from_3
+	ck_assert_str_eq(subtract("III", "I"), "II");

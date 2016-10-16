@@ -356,6 +356,14 @@ START_TEST(subtract_1_from_2)
 {
 #line 133
 	ck_assert_str_eq(subtract("II", "I"), "I");
+
+}
+END_TEST
+
+START_TEST(subtract_1_from_3)
+{
+#line 136
+	ck_assert_str_eq(subtract("III", "I"), "II");
 }
 END_TEST
 
@@ -411,6 +419,7 @@ int main(void)
     tcase_add_test(tc1_1, add_1000_and_1000);
     tcase_add_test(tc1_1, add_1500_and_2499);
     tcase_add_test(tc1_1, subtract_1_from_2);
+    tcase_add_test(tc1_1, subtract_1_from_3);
 
     srunner_run_all(sr, CK_ENV);
     nf = srunner_ntests_failed(sr);

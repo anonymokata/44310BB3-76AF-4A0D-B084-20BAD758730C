@@ -46,7 +46,7 @@ int get_abacus_index(char symbol, struct Abacus* abacus) {
 	return -1;
 }
 
-void tally_numerals(char* input, struct Abacus* abacus) {
+void tally(char* input, struct Abacus* abacus) {
 	int input_index;
 	int end = strlen(input) - 1;
 	int abacus_index;
@@ -78,6 +78,10 @@ void tally_numerals(char* input, struct Abacus* abacus) {
 
 		previous_symbol = input[input_index];
 	}
+}
+
+void subtractive_tally(char* input, struct Abacus* abacus) {
+	abacus->rows[0].count -= strlen(input);
 }
 
 void adjust_counts(struct Abacus* abacus) {
@@ -140,18 +144,19 @@ char* to_roman_numerals(struct Abacus* abacus) {
 char* add(char* addend1, char* addend2) {
 	struct Abacus abacus = initialize_abacus();
 
-	// printf("addend1 : %s, addend2 : %s\n", addend1, addend2);
-
-	tally_numerals(addend1, &abacus);
-	tally_numerals(addend2, &abacus);
+	tally(addend1, &abacus);
+	tally(addend2, &abacus);
 
 	adjust_counts(&abacus);
-
-	// printf("abacus :  i : %d, v : %d, x : %d\n", abacus.rows[0].count, abacus.rows[1].count, abacus.rows[2].count);
 
 	return to_roman_numerals(&abacus);
 }
 
 char* subtract(char* minuend, char* subtrahend) {
-	return "I";
+	struct Abacus abacus = initialize_abacus();
+
+	tally(minuend, &abacus);
+	subtractive_tally(subtrahend, &abacus);
+
+	return to_roman_numerals(&abacus);
 }
