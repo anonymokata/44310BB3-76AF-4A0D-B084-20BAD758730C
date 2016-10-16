@@ -81,6 +81,11 @@ void tally(char* input, struct Abacus* abacus) {
 }
 
 void subtractive_tally(char* input, struct Abacus* abacus) {
+	if (abacus->rows[0].count <= strlen(input)) {
+		abacus->rows[1].count--;
+		abacus->rows[0].count += 5;
+	}
+	
 	abacus->rows[0].count -= strlen(input);
 }
 
