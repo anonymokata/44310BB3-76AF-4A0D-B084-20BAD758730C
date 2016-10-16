@@ -82,8 +82,11 @@ void tally(char* input, struct Abacus* abacus) {
 
 void subtractive_tally(char* input, struct Abacus* abacus) {
 	int length = strlen(input);
-	if (length == 1 && 'V' == input[0]) {
+	if ('V' == input[length - 1]) {
 		abacus->rows[1].count--;
+		if (length > 1 && 'I' == input[length - 2]) {
+			abacus->rows[0].count++;
+		}
 	} else {
 		if (abacus->rows[0].count <= length) {
 			abacus->rows[1].count--;

@@ -384,6 +384,14 @@ START_TEST(subtract_5_from_6)
 }
 END_TEST
 
+START_TEST(subtract_4_from_5)
+{
+#line 145
+	ck_assert_str_eq(subtract("V", "IV"), "I");
+
+}
+END_TEST
+
 int main(void)
 {
     Suite *s1 = suite_create("Core");
@@ -439,6 +447,7 @@ int main(void)
     tcase_add_test(tc1_1, subtract_1_from_3);
     tcase_add_test(tc1_1, subtract_1_from_5);
     tcase_add_test(tc1_1, subtract_5_from_6);
+    tcase_add_test(tc1_1, subtract_4_from_5);
 
     srunner_run_all(sr, CK_ENV);
     nf = srunner_ntests_failed(sr);
