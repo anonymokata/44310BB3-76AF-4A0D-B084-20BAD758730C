@@ -6,3 +6,4 @@ pointer cleanup ?
 remove commented printf's
 still a few magic numbers inline
 add statics and consts ?
+handle subtrahend >= minuend

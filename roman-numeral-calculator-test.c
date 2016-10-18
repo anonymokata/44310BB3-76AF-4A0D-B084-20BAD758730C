@@ -440,6 +440,30 @@ START_TEST(subtract_19_from_20)
 }
 END_TEST
 
+START_TEST(subtract_50_from_51)
+{
+#line 166
+	ck_assert_str_eq(subtract("LI", "L"), "I");
+
+}
+END_TEST
+
+START_TEST(subtract_1_from_50)
+{
+#line 169
+	ck_assert_str_eq(subtract("L", "I"), "XLIX");
+
+}
+END_TEST
+
+START_TEST(subtract_5_from_50)
+{
+#line 172
+	ck_assert_str_eq(subtract("L", "V"), "XLV");
+
+}
+END_TEST
+
 int main(void)
 {
     Suite *s1 = suite_create("Core");
@@ -502,6 +526,9 @@ int main(void)
     tcase_add_test(tc1_1, subtract_1_from_10);
     tcase_add_test(tc1_1, subtract_10_from_11);
     tcase_add_test(tc1_1, subtract_19_from_20);
+    tcase_add_test(tc1_1, subtract_50_from_51);
+    tcase_add_test(tc1_1, subtract_1_from_50);
+    tcase_add_test(tc1_1, subtract_5_from_50);
 
     srunner_run_all(sr, CK_ENV);
     nf = srunner_ntests_failed(sr);

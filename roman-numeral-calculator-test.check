@@ -162,3 +162,12 @@
 #test subtract_19_from_20
 	ck_assert_str_eq(subtract("XX", "XIX"), "I");
 
+#test subtract_50_from_51
+	ck_assert_str_eq(subtract("LI", "L"), "I");
+
+#test subtract_1_from_50
+	ck_assert_str_eq(subtract("L", "I"), "XLIX");
+
+#test subtract_5_from_50
+	ck_assert_str_eq(subtract("L", "V"), "XLV");
+

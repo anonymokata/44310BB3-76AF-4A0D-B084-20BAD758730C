@@ -89,12 +89,20 @@ void subtractive_tally(char* input, struct Abacus* abacus) {
 	for (input_index = end; input_index >= 0; input_index--) {
 		abacus_index = get_abacus_index(input[input_index], abacus);
 
-		if ('X' == input[input_index]) {
+		if ('L' == input[input_index]) {
+
+			abacus->rows[abacus_index].count--;
+
+		} else if ('X' == input[input_index]) {
 
 			abacus->rows[abacus_index].count--;
 
 		} else if ('V' == input[input_index]) {
 			if (abacus->rows[abacus_index].count == 0) {
+				if (abacus->rows[abacus_index + 1].count == 0) {
+					abacus->rows[abacus_index + 2].count--;
+					abacus->rows[abacus_index + 1].count += 5;
+				}
 				abacus->rows[abacus_index + 1].count--;
 				abacus->rows[abacus_index].count += 2;
 			}
@@ -107,6 +115,10 @@ void subtractive_tally(char* input, struct Abacus* abacus) {
 			} else {
 				if (abacus->rows[abacus_index].count == 0) {
 					if (abacus->rows[abacus_index + 1].count == 0) {
+						if (abacus->rows[abacus_index + 2].count == 0) {
+							abacus->rows[abacus_index + 3].count--;
+							abacus->rows[abacus_index + 2].count += 5;
+						}
 						abacus->rows[abacus_index + 2].count--;
 						abacus->rows[abacus_index + 1].count += 2;
 					}
