@@ -82,37 +82,39 @@ void tally(char* input, struct Abacus* abacus) {
 
 void subtractive_tally(char* input, struct Abacus* abacus) {
 	int input_index;	
-	int end = strlen(input) - 1;	
+	int end = strlen(input) - 1;
+	int abacus_index;
 	char previous_symbol = NULL;
 
 	for (input_index = end; input_index >= 0; input_index--) {
+		abacus_index = get_abacus_index(input[input_index], abacus);
 
 		if ('X' == input[input_index]) {
 
-			abacus->rows[2].count--;
+			abacus->rows[abacus_index].count--;
 
 		} else if ('V' == input[input_index]) {
-			if (abacus->rows[1].count == 0) {
-				abacus->rows[2].count--;
-				abacus->rows[1].count += 2;
+			if (abacus->rows[abacus_index].count == 0) {
+				abacus->rows[abacus_index + 1].count--;
+				abacus->rows[abacus_index].count += 2;
 			}
 
-			abacus->rows[1].count--;
+			abacus->rows[abacus_index].count--;
 
 		} else {
-			if ('V' == previous_symbol) {
-				abacus->rows[0].count++;
+			if ('V' == previous_symbol || 'X' == previous_symbol) {
+				abacus->rows[abacus_index].count++;
 			} else {
-				if (abacus->rows[0].count == 0) {
-					if (abacus->rows[1].count == 0) {
-						abacus->rows[2].count--;
-						abacus->rows[1].count += 2;
+				if (abacus->rows[abacus_index].count == 0) {
+					if (abacus->rows[abacus_index + 1].count == 0) {
+						abacus->rows[abacus_index + 2].count--;
+						abacus->rows[abacus_index + 1].count += 2;
 					}
-					abacus->rows[1].count--;
-					abacus->rows[0].count += 5;
+					abacus->rows[abacus_index + 1].count--;
+					abacus->rows[abacus_index].count += 5;
 				}
 				
-				abacus->rows[0].count--;
+				abacus->rows[abacus_index].count--;
 			}
 		}
 

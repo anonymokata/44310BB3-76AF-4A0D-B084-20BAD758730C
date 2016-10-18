@@ -159,3 +159,6 @@
 #test subtract_10_from_11
 	ck_assert_str_eq(subtract("XI", "X"), "I");
 
+#test subtract_19_from_20
+	ck_assert_str_eq(subtract("XX", "XIX"), "I");
+
