@@ -171,3 +171,6 @@
 #test subtract_5_from_50
 	ck_assert_str_eq(subtract("L", "V"), "XLV");
 
+#test subtract_10_from_50
+	ck_assert_str_eq(subtract("L", "X"), "XL");
+
