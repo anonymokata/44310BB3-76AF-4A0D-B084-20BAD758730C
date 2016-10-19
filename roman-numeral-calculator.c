@@ -34,6 +34,10 @@ int is_even(int number) {
 	return number % 2 == 0 ? 1 : 0;
 }
 
+int ratio_to_next_row(int row_index) {
+	return is_even(row_index) ? 5 : 2;
+}
+
 int get_abacus_index(char symbol, struct Abacus* abacus) {
 	int index;
 
@@ -80,6 +84,14 @@ void tally(char* input, struct Abacus* abacus) {
 	}
 }
 
+void borrow_if_necessary(int row_index, struct Abacus* abacus) {
+	if (abacus->rows[row_index].count == 0) {
+		borrow_if_necessary(row_index + 1, abacus);
+		abacus->rows[row_index + 1].count--;
+		abacus->rows[row_index].count += ratio_to_next_row(row_index);
+	}
+}
+
 void subtractive_tally(char* input, struct Abacus* abacus) {
 	int input_index;	
 	int end = strlen(input) - 1;
@@ -98,14 +110,7 @@ void subtractive_tally(char* input, struct Abacus* abacus) {
 			abacus->rows[abacus_index].count--;
 
 		} else if ('V' == input[input_index]) {
-			if (abacus->rows[abacus_index].count == 0) {
-				if (abacus->rows[abacus_index + 1].count == 0) {
-					abacus->rows[abacus_index + 2].count--;
-					abacus->rows[abacus_index + 1].count += 5;
-				}
-				abacus->rows[abacus_index + 1].count--;
-				abacus->rows[abacus_index].count += 2;
-			}
+			borrow_if_necessary(abacus_index, abacus);
 
 			abacus->rows[abacus_index].count--;
 
@@ -113,18 +118,7 @@ void subtractive_tally(char* input, struct Abacus* abacus) {
 			if ('V' == previous_symbol || 'X' == previous_symbol) {
 				abacus->rows[abacus_index].count++;
 			} else {
-				if (abacus->rows[abacus_index].count == 0) {
-					if (abacus->rows[abacus_index + 1].count == 0) {
-						if (abacus->rows[abacus_index + 2].count == 0) {
-							abacus->rows[abacus_index + 3].count--;
-							abacus->rows[abacus_index + 2].count += 5;
-						}
-						abacus->rows[abacus_index + 2].count--;
-						abacus->rows[abacus_index + 1].count += 2;
-					}
-					abacus->rows[abacus_index + 1].count--;
-					abacus->rows[abacus_index].count += 5;
-				}
+				borrow_if_necessary(abacus_index, abacus);
 				
 				abacus->rows[abacus_index].count--;
 			}
@@ -136,14 +130,14 @@ void subtractive_tally(char* input, struct Abacus* abacus) {
 
 void adjust_counts(struct Abacus* abacus) {
 	int index;
-	int ratio_to_next_row;
+	int ratio;
 
 	for (index = 0; index < abacus_row_count - 1; index++) {
-		ratio_to_next_row = is_even(index) ? 5 : 2;
+		ratio = ratio_to_next_row(index);
 
-		while (abacus->rows[index].count >= ratio_to_next_row) {
+		while (abacus->rows[index].count >= ratio) {
 			abacus->rows[index + 1].count++;
-			abacus->rows[index].count -= ratio_to_next_row;
+			abacus->rows[index].count -= ratio;
 		}
 	}
 }
