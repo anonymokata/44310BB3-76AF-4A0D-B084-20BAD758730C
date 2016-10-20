@@ -186,3 +186,6 @@
 #test subtract_400_from_500
 	ck_assert_str_eq(subtract("D", "CD"), "C");
 
+#test subtract_450_from_500
+	ck_assert_str_eq(subtract("D", "CDL"), "L");
+
