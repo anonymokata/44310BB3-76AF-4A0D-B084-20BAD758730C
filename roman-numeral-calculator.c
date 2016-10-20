@@ -85,14 +85,17 @@ void tally(char* input, struct Abacus* abacus) {
 }
 
 void borrow_if_necessary(int row_index, struct Abacus* abacus) {
-	if (abacus->rows[row_index].count == 0) {
+	//printf("borrow from %c : %d\n", abacus->rows[row_index].symbol, abacus->rows[row_index].count);
+	if (abacus->rows[row_index].count == 0 && (row_index + 1) < abacus_row_count) {
 		borrow_if_necessary(row_index + 1, abacus);
+		//printf("borrowed from %c : %d\n", abacus->rows[row_index].symbol, abacus->rows[row_index].count);
 		abacus->rows[row_index + 1].count--;
 		abacus->rows[row_index].count += ratio_to_next_row(row_index);
 	}
 }
 
 void subtractive_tally(char* input, struct Abacus* abacus) {
+	//printf("input : %s\n", input);
 	int input_index;	
 	int end = strlen(input) - 1;
 	int abacus_index;
@@ -134,6 +137,7 @@ void subtractive_tally(char* input, struct Abacus* abacus) {
 		}
 
 		previous_symbol = input[input_index];
+		//printf("%c : %d\n", abacus->rows[abacus_index].symbol, abacus->rows[abacus_index].count);
 	}
 }
 
@@ -152,7 +156,7 @@ void adjust_counts(struct Abacus* abacus) {
 }
 
 void append(char* string, char symbol, int* index) {
-	// printf("string : %s, symbol : %c, index : %d\n", string, symbol, *index);
+	//printf("string : %s, symbol : %c, index : %d\n", string, symbol, *index);
 	string[*index] = symbol;
 	(*index)++;
 }
@@ -186,7 +190,7 @@ char* to_roman_numerals(struct Abacus* abacus) {
 		} else {
 			append_n_times(result, abacus->rows[abacus_index].symbol, &result_index, abacus->rows[abacus_index].count);
 		}
-		// printf("result : %s\n", result);
+		//printf("result : %s\n", result);
 	}
 
 	result[result_index] = '\0';
