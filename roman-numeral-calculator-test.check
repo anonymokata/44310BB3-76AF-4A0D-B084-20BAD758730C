@@ -180,3 +180,6 @@
 #test subtract_90_from_100
 	ck_assert_str_eq(subtract("C", "XC"), "X");
 
+#test subtract_95_from_100
+	ck_assert_str_eq(subtract("C", "XCV"), "V");
+
