@@ -512,6 +512,14 @@ START_TEST(subtract_450_from_500)
 }
 END_TEST
 
+START_TEST(subtract_490_from_500)
+{
+#line 193
+	ck_assert_str_eq(subtract("D", "CDXC"), "X");
+
+}
+END_TEST
+
 int main(void)
 {
     Suite *s1 = suite_create("Core");
@@ -583,6 +591,7 @@ int main(void)
     tcase_add_test(tc1_1, subtract_95_from_100);
     tcase_add_test(tc1_1, subtract_400_from_500);
     tcase_add_test(tc1_1, subtract_450_from_500);
+    tcase_add_test(tc1_1, subtract_490_from_500);
 
     srunner_run_all(sr, CK_ENV);
     nf = srunner_ntests_failed(sr);
