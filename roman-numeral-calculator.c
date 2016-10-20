@@ -106,7 +106,7 @@ void subtractive_tally(char* input, struct Abacus* abacus) {
 			abacus->rows[abacus_index].count--;
 
 		} else if ('X' == input[input_index]) {
-			if ('L' == previous_symbol) {
+			if ('L' == previous_symbol || 'C' == previous_symbol) {
 				abacus->rows[abacus_index].count++;
 			} else {
 				borrow_if_necessary(abacus_index, abacus);
