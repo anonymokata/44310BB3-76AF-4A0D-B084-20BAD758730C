@@ -201,3 +201,6 @@
 #test subtract_3900_from_3999
 	ck_assert_str_eq(subtract("MMMCMXCIX", "MMMCM"), "XCIX");
 
+#test subtract_3998_from_3999
+	ck_assert_str_eq(subtract("MMMCMXCIX", "MMMCMXCVIII"), "I");
+
