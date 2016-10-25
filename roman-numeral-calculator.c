@@ -104,18 +104,17 @@ void subtractive_tally(char* input, struct Abacus* abacus) {
 	for (input_index = end; input_index >= 0; input_index--) {
 		abacus_index = get_abacus_index(input[input_index], abacus);
 
+		if (is_even(abacus_index) && 
+			abacus_index != (abacus_row_count - 1) &&
+			(abacus->rows[abacus_index + 1].symbol == previous_symbol || 
+			abacus->rows[abacus_index + 2].symbol == previous_symbol)) {
 
-		if (abacus_index == (abacus_row_count - 1) || !is_even(abacus_index)) {
+			abacus->rows[abacus_index].count++;
+
+		} else {
 			borrow_if_necessary(abacus_index, abacus);
 			abacus->rows[abacus_index].count--;			
-		} else {
-			if (abacus->rows[abacus_index + 1].symbol == previous_symbol || abacus->rows[abacus_index + 2].symbol == previous_symbol) {
-				abacus->rows[abacus_index].count++;
-			} else {
-				borrow_if_necessary(abacus_index, abacus);
-				abacus->rows[abacus_index].count--;
-			}			
-		}
+		} 
 
 		previous_symbol = input[input_index];
 		// printf("%c : %d\n", abacus->rows[abacus_index].symbol, abacus->rows[abacus_index].count);
