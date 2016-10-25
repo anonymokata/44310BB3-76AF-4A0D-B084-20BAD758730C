@@ -192,3 +192,6 @@
 #test subtract_490_from_500
 	ck_assert_str_eq(subtract("D", "CDXC"), "X");
 
+#test subtract_500_from_1000
+	ck_assert_str_eq(subtract("M", "D"), "D");
+
