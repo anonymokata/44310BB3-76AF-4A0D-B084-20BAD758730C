@@ -4,6 +4,9 @@
 #include "roman-numeral-calculator.h"
 
 #define abacus_row_count 7
+#define ratio_to_next_row_odd 5
+#define ratio_to_next_row_even 2
+#define ratio_to_next_next_row 10
 
 struct Row {
 	char symbol;
@@ -35,7 +38,7 @@ int is_even(int number) {
 }
 
 int ratio_to_next_row(int row_index) {
-	return is_even(row_index) ? 5 : 2;
+	return is_even(row_index) ? ratio_to_next_row_odd : ratio_to_next_row_even;
 }
 
 int get_abacus_index(char symbol, struct Abacus* abacus) {
@@ -69,7 +72,8 @@ void tally(char* input, struct Abacus* abacus) {
 		if (is_preceding_subtractor(abacus_index, previous_abacus_index)) {
 
 			abacus->rows[previous_abacus_index].count--;
-			abacus->rows[abacus_index].count += is_even(previous_abacus_index) ? 9 : 4;
+			int carry = (is_even(previous_abacus_index) ? ratio_to_next_next_row : ratio_to_next_row_odd) - 1;
+			abacus->rows[abacus_index].count += carry;
 
 		} else {
 			abacus->rows[abacus_index].count++;
@@ -142,7 +146,7 @@ char* to_roman_numerals(struct Abacus* abacus) {
 
 	for (abacus_index = abacus_row_count - 1; abacus_index >= 0; abacus_index--) {
 
-		if (!is_even(abacus_index) && abacus->rows[abacus_index - 1].count == 4) {
+		if (!is_even(abacus_index) && abacus->rows[abacus_index - 1].count == (ratio_to_next_row_odd - 1)) {
 
 			append(result, abacus->rows[abacus_index - 1].symbol, &result_index);
 
