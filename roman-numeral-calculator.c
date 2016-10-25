@@ -50,37 +50,32 @@ int get_abacus_index(char symbol, struct Abacus* abacus) {
 	return -1;
 }
 
+int is_preceding_subtractor(int abacus_index, int previous_abacus_index) {
+	return is_even(abacus_index) && 
+			abacus_index != (abacus_row_count - 1) && 
+			(abacus_index + 1 == previous_abacus_index || 
+			abacus_index + 2 == previous_abacus_index);
+}
+
 void tally(char* input, struct Abacus* abacus) {
 	int input_index;
 	int end = strlen(input) - 1;
 	int abacus_index;
-	char previous_symbol = NULL;
+	int previous_abacus_index = NULL;
 
 	for (input_index = end; input_index >= 0; input_index--) {
 		abacus_index = get_abacus_index(input[input_index], abacus);
 
-		if (abacus_index == (abacus_row_count - 1) || !is_even(abacus_index)) {
+		if (is_preceding_subtractor(abacus_index, previous_abacus_index)) {
 
-			abacus->rows[abacus_index].count++;
+			abacus->rows[previous_abacus_index].count--;
+			abacus->rows[abacus_index].count += is_even(previous_abacus_index) ? 9 : 4;
 
 		} else {
-
-			if (previous_symbol == abacus->rows[abacus_index + 1].symbol) {
-
-				abacus->rows[abacus_index + 1].count--;
-				abacus->rows[abacus_index].count += 4;
-
-			} else if (previous_symbol == abacus->rows[abacus_index + 2].symbol) {
-
-				abacus->rows[abacus_index + 2].count--;
-				abacus->rows[abacus_index].count += 9;
-
-			} else {
-				abacus->rows[abacus_index].count++;
-			}
+			abacus->rows[abacus_index].count++;
 		}
 
-		previous_symbol = input[input_index];
+		previous_abacus_index = abacus_index;
 	}
 }
 
@@ -99,15 +94,12 @@ void subtractive_tally(char* input, struct Abacus* abacus) {
 	int input_index;	
 	int end = strlen(input) - 1;
 	int abacus_index;
-	char previous_symbol = NULL;
+	int previous_abacus_index = NULL;
 
 	for (input_index = end; input_index >= 0; input_index--) {
 		abacus_index = get_abacus_index(input[input_index], abacus);
 
-		if (is_even(abacus_index) && 
-			abacus_index != (abacus_row_count - 1) &&
-			(abacus->rows[abacus_index + 1].symbol == previous_symbol || 
-			abacus->rows[abacus_index + 2].symbol == previous_symbol)) {
+		if (is_preceding_subtractor(abacus_index, previous_abacus_index)) {
 
 			abacus->rows[abacus_index].count++;
 
@@ -116,7 +108,7 @@ void subtractive_tally(char* input, struct Abacus* abacus) {
 			abacus->rows[abacus_index].count--;			
 		} 
 
-		previous_symbol = input[input_index];
+		previous_abacus_index = abacus_index;
 		// printf("%c : %d\n", abacus->rows[abacus_index].symbol, abacus->rows[abacus_index].count);
 	}
 }
