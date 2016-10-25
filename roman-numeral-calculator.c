@@ -104,44 +104,17 @@ void subtractive_tally(char* input, struct Abacus* abacus) {
 	for (input_index = end; input_index >= 0; input_index--) {
 		abacus_index = get_abacus_index(input[input_index], abacus);
 
-		if ('M' == input[input_index]) {
-			abacus->rows[abacus_index].count--;
-			
-		} else if ('D' == input[input_index]) {
+
+		if (abacus_index == (abacus_row_count - 1) || !is_even(abacus_index)) {
 			borrow_if_necessary(abacus_index, abacus);
-			abacus->rows[abacus_index].count--;
-			
-		} else if ('C' == input[input_index]) {
-			if ('D' == previous_symbol || 'M' == previous_symbol) {
-				abacus->rows[abacus_index].count++;
-			} else {
-				borrow_if_necessary(abacus_index, abacus);
-				abacus->rows[abacus_index].count--;
-			}
-
-		} else if ('L' == input[input_index]) {
-			borrow_if_necessary(abacus_index, abacus);
-			abacus->rows[abacus_index].count--;
-
-		} else if ('X' == input[input_index]) {
-			if ('L' == previous_symbol || 'C' == previous_symbol) {
-				abacus->rows[abacus_index].count++;
-			} else {
-				borrow_if_necessary(abacus_index, abacus);
-				abacus->rows[abacus_index].count--;
-			}
-
-		} else if ('V' == input[input_index]) {
-			borrow_if_necessary(abacus_index, abacus);
-			abacus->rows[abacus_index].count--;
-
+			abacus->rows[abacus_index].count--;			
 		} else {
-			if ('V' == previous_symbol || 'X' == previous_symbol) {
+			if (abacus->rows[abacus_index + 1].symbol == previous_symbol || abacus->rows[abacus_index + 2].symbol == previous_symbol) {
 				abacus->rows[abacus_index].count++;
 			} else {
 				borrow_if_necessary(abacus_index, abacus);
 				abacus->rows[abacus_index].count--;
-			}
+			}			
 		}
 
 		previous_symbol = input[input_index];
