@@ -1,8 +1,10 @@
 #ifndef ROMAN_NUMERAL_CALCULATOR
 #define ROMAN_NUMERAL_CALCULATOR
 
-char* add(char* addend1, char* addend2);
+typedef enum { SUCCESS } ReturnCode;
 
-char* subtract(char* minuend, char* subtrahend);
+ReturnCode add(char* addend1, char* addend2, char* sum);
+
+ReturnCode subtract(char* minuend, char* subtrahend, char* difference);
 
 #endif

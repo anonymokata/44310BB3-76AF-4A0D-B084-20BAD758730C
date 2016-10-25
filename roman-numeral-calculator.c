@@ -1,4 +1,3 @@
-#include <stdlib.h>
 #include <string.h>
 
 #include "roman-numeral-calculator.h"
@@ -139,8 +138,7 @@ void append_n_times(char* string, char symbol, int* index, int n) {
 	}	
 }
 
-char* to_roman_numerals(struct Abacus* abacus) {
-	char* result = malloc(0);
+void to_roman_numerals(struct Abacus* abacus, char* result) {
 	int result_index = 0;
 	int abacus_index;
 
@@ -164,11 +162,9 @@ char* to_roman_numerals(struct Abacus* abacus) {
 	}
 
 	result[result_index] = '\0';
-
-	return result;
 }
 
-char* add(char* addend1, char* addend2) {
+ReturnCode add(char* addend1, char* addend2, char* sum) {
 	struct Abacus abacus = initialize_abacus();
 
 	tally(addend1, &abacus);
@@ -176,16 +172,17 @@ char* add(char* addend1, char* addend2) {
 
 	adjust_counts(&abacus);
 
-	return to_roman_numerals(&abacus);
+	to_roman_numerals(&abacus, sum);
+	return SUCCESS;
 }
 
-char* subtract(char* minuend, char* subtrahend) {
+ReturnCode subtract(char* minuend, char* subtrahend, char* difference) {
 	struct Abacus abacus = initialize_abacus();
 
 	tally(minuend, &abacus);
 	subtractive_tally(subtrahend, &abacus);
 
 	adjust_counts(&abacus);
-
-	return to_roman_numerals(&abacus);
+	to_roman_numerals(&abacus, difference);
+	return SUCCESS;
 }
