@@ -198,3 +198,6 @@
 #test subtract_3005_from_3999
 	ck_assert_str_eq(subtract("MMMCMXCIX", "MMMV"), "CMXCIV");
 
+#test subtract_3900_from_3999
+	ck_assert_str_eq(subtract("MMMCMXCIX", "MMMCM"), "XCIX");
+
