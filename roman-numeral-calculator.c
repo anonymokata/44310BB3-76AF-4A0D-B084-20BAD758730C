@@ -190,7 +190,10 @@ ReturnCode add(char* addend1, char* addend2, char* sum) {
 ReturnCode subtract(char* minuend, char* subtrahend, char* difference) {
 	struct Abacus abacus = initialize_abacus();
 
-	tally(minuend, &abacus);
+	ReturnCode return_code = tally(minuend, &abacus);
+	if (INVALID_ARGUMENT == return_code) {
+		return return_code;
+	}
 	subtractive_tally(subtrahend, &abacus);
 	adjust_counts(&abacus);
 	to_roman_numerals(&abacus, difference);
