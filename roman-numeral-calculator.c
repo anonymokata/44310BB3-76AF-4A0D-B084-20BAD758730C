@@ -69,7 +69,7 @@ ReturnCode tally(char* input, struct Abacus* abacus) {
 	for (input_index = end; input_index >= 0; input_index--) {
 		abacus_index = get_abacus_index(input[input_index], abacus);
 		if (abacus_index < 0) {
-			return INVALID_ARGUMENT;
+			return INVALID_CHARACTER;
 		}
 
 		if (is_preceding_subtractor(abacus_index, previous_abacus_index)) {
@@ -105,7 +105,7 @@ ReturnCode subtractive_tally(char* input, struct Abacus* abacus) {
 	for (input_index = end; input_index >= 0; input_index--) {
 		abacus_index = get_abacus_index(input[input_index], abacus);
 		if (abacus_index < 0) {
-			return INVALID_ARGUMENT;
+			return INVALID_CHARACTER;
 		}
 
 		if (is_preceding_subtractor(abacus_index, previous_abacus_index)) {
@@ -177,34 +177,30 @@ void to_roman_numerals(struct Abacus* abacus, char* result) {
 
 ReturnCode add(char* addend1, char* addend2, char* sum) {
 	struct Abacus abacus = initialize_abacus();
+	ReturnCode return_code = SUCCESS;
 	
-	ReturnCode return_code = tally(addend1, &abacus);
-	if (INVALID_ARGUMENT == return_code) {
-		return return_code;
-	}
+	return_code = tally(addend1, &abacus);
+	if (INVALID_CHARACTER == return_code) { return return_code; }
 	return_code = tally(addend2, &abacus);
-	if (INVALID_ARGUMENT == return_code) {
-		return return_code;
-	}
+	if (INVALID_CHARACTER == return_code) { return return_code; }
+
 	adjust_counts(&abacus);
 	to_roman_numerals(&abacus, sum);
 
-	return SUCCESS;
+	return return_code;
 }
 
 ReturnCode subtract(char* minuend, char* subtrahend, char* difference) {
 	struct Abacus abacus = initialize_abacus();
+	ReturnCode return_code = SUCCESS;
 
-	ReturnCode return_code = tally(minuend, &abacus);
-	if (INVALID_ARGUMENT == return_code) {
-		return return_code;
-	}
+	return_code = tally(minuend, &abacus);
+	if (INVALID_CHARACTER == return_code) { return return_code; }
 	return_code = subtractive_tally(subtrahend, &abacus);
-	if (INVALID_ARGUMENT == return_code) {
-		return return_code;
-	}
+	if (INVALID_CHARACTER == return_code) { return return_code; }
+	
 	adjust_counts(&abacus);
 	to_roman_numerals(&abacus, difference);
 
-	return SUCCESS;
+	return return_code;
 }

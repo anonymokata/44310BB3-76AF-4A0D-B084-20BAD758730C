@@ -439,21 +439,21 @@ START_TEST(add_1500_and_2499)
 }
 END_TEST
 
-START_TEST(given_a_bad_character_in_first_addend_adding_results_in_invalid_argument)
+START_TEST(given_a_bad_character_in_first_addend_adding_results_in_invalid_character)
 {
 #line 220
 	char* sum = malloc(16);
-	ck_assert_int_eq(INVALID_ARGUMENT, add("A", "I", sum));
+	ck_assert_int_eq(INVALID_CHARACTER, add("A", "I", sum));
 	ck_assert_str_eq(sum, "");
 
 }
 END_TEST
 
-START_TEST(given_a_bad_character_in_second_addend_adding_results_in_invalid_argument)
+START_TEST(given_a_bad_character_in_second_addend_adding_results_in_invalid_character)
 {
 #line 225
 	char* sum = malloc(16);
-	ck_assert_int_eq(INVALID_ARGUMENT, add("I", "B", sum));
+	ck_assert_int_eq(INVALID_CHARACTER, add("I", "B", sum));
 	ck_assert_str_eq(sum, "");
 
 }
@@ -709,21 +709,21 @@ START_TEST(subtract_3998_from_3999)
 }
 END_TEST
 
-START_TEST(given_a_bad_character_in_minuend_subtracting_results_in_invalid_argument)
+START_TEST(given_a_bad_character_in_minuend_subtracting_results_in_invalid_character)
 {
 #line 355
 	char* difference = malloc(16);
-	ck_assert_int_eq(INVALID_ARGUMENT, subtract("F", "I", difference));
+	ck_assert_int_eq(INVALID_CHARACTER, subtract("F", "I", difference));
 	ck_assert_str_eq(difference, "");
 
 }
 END_TEST
 
-START_TEST(given_a_bad_character_in_subtrahend_subtracting_results_in_invalid_argument)
+START_TEST(given_a_bad_character_in_subtrahend_subtracting_results_in_invalid_character)
 {
 #line 360
 	char* difference = malloc(16);
-	ck_assert_int_eq(INVALID_ARGUMENT, subtract("II", "G", difference));
+	ck_assert_int_eq(INVALID_CHARACTER, subtract("II", "G", difference));
 	ck_assert_str_eq(difference, "");
 
 }
@@ -780,8 +780,8 @@ int main(void)
     tcase_add_test(tc1_1, add_999_and_2);
     tcase_add_test(tc1_1, add_1000_and_1000);
     tcase_add_test(tc1_1, add_1500_and_2499);
-    tcase_add_test(tc1_1, given_a_bad_character_in_first_addend_adding_results_in_invalid_argument);
-    tcase_add_test(tc1_1, given_a_bad_character_in_second_addend_adding_results_in_invalid_argument);
+    tcase_add_test(tc1_1, given_a_bad_character_in_first_addend_adding_results_in_invalid_character);
+    tcase_add_test(tc1_1, given_a_bad_character_in_second_addend_adding_results_in_invalid_character);
     tcase_add_test(tc1_1, subtract_1_from_2);
     tcase_add_test(tc1_1, subtract_1_from_3);
     tcase_add_test(tc1_1, subtract_1_from_5);
@@ -807,8 +807,8 @@ int main(void)
     tcase_add_test(tc1_1, subtract_3005_from_3999);
     tcase_add_test(tc1_1, subtract_3900_from_3999);
     tcase_add_test(tc1_1, subtract_3998_from_3999);
-    tcase_add_test(tc1_1, given_a_bad_character_in_minuend_subtracting_results_in_invalid_argument);
-    tcase_add_test(tc1_1, given_a_bad_character_in_subtrahend_subtracting_results_in_invalid_argument);
+    tcase_add_test(tc1_1, given_a_bad_character_in_minuend_subtracting_results_in_invalid_character);
+    tcase_add_test(tc1_1, given_a_bad_character_in_subtrahend_subtracting_results_in_invalid_character);
 
     srunner_run_all(sr, CK_ENV);
     nf = srunner_ntests_failed(sr);

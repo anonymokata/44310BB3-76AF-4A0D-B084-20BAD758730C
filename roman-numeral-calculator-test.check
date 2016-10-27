@@ -216,14 +216,14 @@
 	ck_assert_int_eq(SUCCESS, add("MD", "MMCDXCIX", sum));
 	ck_assert_str_eq(sum, "MMMCMXCIX");
 
-#test given_a_bad_character_in_first_addend_adding_results_in_invalid_argument
+#test given_a_bad_character_in_first_addend_adding_results_in_invalid_character
 	char* sum = malloc(16);
-	ck_assert_int_eq(INVALID_ARGUMENT, add("A", "I", sum));
+	ck_assert_int_eq(INVALID_CHARACTER, add("A", "I", sum));
 	ck_assert_str_eq(sum, "");
 
-#test given_a_bad_character_in_second_addend_adding_results_in_invalid_argument
+#test given_a_bad_character_in_second_addend_adding_results_in_invalid_character
 	char* sum = malloc(16);
-	ck_assert_int_eq(INVALID_ARGUMENT, add("I", "B", sum));
+	ck_assert_int_eq(INVALID_CHARACTER, add("I", "B", sum));
 	ck_assert_str_eq(sum, "");
 
 #test subtract_1_from_2
@@ -351,13 +351,13 @@
 	ck_assert_int_eq(SUCCESS, subtract("MMMCMXCIX", "MMMCMXCVIII", difference));
 	ck_assert_str_eq(difference, "I");
 
-#test given_a_bad_character_in_minuend_subtracting_results_in_invalid_argument
+#test given_a_bad_character_in_minuend_subtracting_results_in_invalid_character
 	char* difference = malloc(16);
-	ck_assert_int_eq(INVALID_ARGUMENT, subtract("F", "I", difference));
+	ck_assert_int_eq(INVALID_CHARACTER, subtract("F", "I", difference));
 	ck_assert_str_eq(difference, "");
 
-#test given_a_bad_character_in_subtrahend_subtracting_results_in_invalid_argument
+#test given_a_bad_character_in_subtrahend_subtracting_results_in_invalid_character
 	char* difference = malloc(16);
-	ck_assert_int_eq(INVALID_ARGUMENT, subtract("II", "G", difference));
+	ck_assert_int_eq(INVALID_CHARACTER, subtract("II", "G", difference));
 	ck_assert_str_eq(difference, "");
 
