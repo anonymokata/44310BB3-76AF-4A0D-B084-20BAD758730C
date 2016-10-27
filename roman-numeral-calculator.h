@@ -1,7 +1,7 @@
 #ifndef ROMAN_NUMERAL_CALCULATOR
 #define ROMAN_NUMERAL_CALCULATOR
 
-typedef enum { SUCCESS } ReturnCode;
+typedef enum { SUCCESS, INVALID_ARGUMENT } ReturnCode;
 
 ReturnCode add(char* addend1, char* addend2, char* sum);
 

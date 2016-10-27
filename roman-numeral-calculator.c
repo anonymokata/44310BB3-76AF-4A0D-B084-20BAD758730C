@@ -1,3 +1,4 @@
+#include <stdlib.h>
 #include <string.h>
 
 #include "roman-numeral-calculator.h"
@@ -59,7 +60,7 @@ int is_preceding_subtractor(int abacus_index, int previous_abacus_index) {
 			abacus_index + 2 == previous_abacus_index);
 }
 
-void tally(char* input, struct Abacus* abacus) {
+ReturnCode tally(char* input, struct Abacus* abacus) {
 	int input_index;
 	int end = strlen(input) - 1;
 	int abacus_index;
@@ -67,6 +68,9 @@ void tally(char* input, struct Abacus* abacus) {
 
 	for (input_index = end; input_index >= 0; input_index--) {
 		abacus_index = get_abacus_index(input[input_index], abacus);
+		if (abacus_index < 0) {
+			return INVALID_ARGUMENT;
+		}
 
 		if (is_preceding_subtractor(abacus_index, previous_abacus_index)) {
 
@@ -80,6 +84,8 @@ void tally(char* input, struct Abacus* abacus) {
 
 		previous_abacus_index = abacus_index;
 	}
+
+	return SUCCESS;
 }
 
 void borrow_if_necessary(int row_index, struct Abacus* abacus) {
@@ -166,13 +172,15 @@ void to_roman_numerals(struct Abacus* abacus, char* result) {
 
 ReturnCode add(char* addend1, char* addend2, char* sum) {
 	struct Abacus abacus = initialize_abacus();
-
-	tally(addend1, &abacus);
+	
+	ReturnCode return_code = tally(addend1, &abacus);
+	if (INVALID_ARGUMENT == return_code) {
+		return return_code;
+	}
 	tally(addend2, &abacus);
-
 	adjust_counts(&abacus);
-
 	to_roman_numerals(&abacus, sum);
+
 	return SUCCESS;
 }
 
@@ -181,8 +189,8 @@ ReturnCode subtract(char* minuend, char* subtrahend, char* difference) {
 
 	tally(minuend, &abacus);
 	subtractive_tally(subtrahend, &abacus);
-
 	adjust_counts(&abacus);
 	to_roman_numerals(&abacus, difference);
+
 	return SUCCESS;
 }
