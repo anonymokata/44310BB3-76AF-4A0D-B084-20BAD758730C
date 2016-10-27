@@ -356,3 +356,8 @@
 	ck_assert_int_eq(INVALID_ARGUMENT, subtract("F", "I", difference));
 	ck_assert_str_eq(difference, "");
 
+#test given_a_bad_character_in_subtrahend_subtracting_results_in_invalid_argument
+	char* difference = malloc(16);
+	ck_assert_int_eq(INVALID_ARGUMENT, subtract("II", "G", difference));
+	ck_assert_str_eq(difference, "");
+

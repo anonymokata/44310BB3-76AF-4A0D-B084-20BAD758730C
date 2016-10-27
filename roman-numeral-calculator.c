@@ -96,7 +96,7 @@ void borrow_if_necessary(int row_index, struct Abacus* abacus) {
 	}
 }
 
-void subtractive_tally(char* input, struct Abacus* abacus) {
+ReturnCode subtractive_tally(char* input, struct Abacus* abacus) {
 	int input_index;	
 	int end = strlen(input) - 1;
 	int abacus_index;
@@ -104,6 +104,9 @@ void subtractive_tally(char* input, struct Abacus* abacus) {
 
 	for (input_index = end; input_index >= 0; input_index--) {
 		abacus_index = get_abacus_index(input[input_index], abacus);
+		if (abacus_index < 0) {
+			return INVALID_ARGUMENT;
+		}
 
 		if (is_preceding_subtractor(abacus_index, previous_abacus_index)) {
 
@@ -116,6 +119,8 @@ void subtractive_tally(char* input, struct Abacus* abacus) {
 
 		previous_abacus_index = abacus_index;
 	}
+
+	return SUCCESS;
 }
 
 void adjust_counts(struct Abacus* abacus) {
@@ -194,7 +199,10 @@ ReturnCode subtract(char* minuend, char* subtrahend, char* difference) {
 	if (INVALID_ARGUMENT == return_code) {
 		return return_code;
 	}
-	subtractive_tally(subtrahend, &abacus);
+	return_code = subtractive_tally(subtrahend, &abacus);
+	if (INVALID_ARGUMENT == return_code) {
+		return return_code;
+	}
 	adjust_counts(&abacus);
 	to_roman_numerals(&abacus, difference);
 

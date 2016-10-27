@@ -719,6 +719,16 @@ START_TEST(given_a_bad_character_in_minuend_subtracting_results_in_invalid_argum
 }
 END_TEST
 
+START_TEST(given_a_bad_character_in_subtrahend_subtracting_results_in_invalid_argument)
+{
+#line 360
+	char* difference = malloc(16);
+	ck_assert_int_eq(INVALID_ARGUMENT, subtract("II", "G", difference));
+	ck_assert_str_eq(difference, "");
+
+}
+END_TEST
+
 int main(void)
 {
     Suite *s1 = suite_create("Core");
@@ -798,6 +808,7 @@ int main(void)
     tcase_add_test(tc1_1, subtract_3900_from_3999);
     tcase_add_test(tc1_1, subtract_3998_from_3999);
     tcase_add_test(tc1_1, given_a_bad_character_in_minuend_subtracting_results_in_invalid_argument);
+    tcase_add_test(tc1_1, given_a_bad_character_in_subtrahend_subtracting_results_in_invalid_argument);
 
     srunner_run_all(sr, CK_ENV);
     nf = srunner_ntests_failed(sr);
