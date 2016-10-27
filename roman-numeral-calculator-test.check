@@ -216,9 +216,14 @@
 	ck_assert_int_eq(SUCCESS, add("MD", "MMCDXCIX", sum));
 	ck_assert_str_eq(sum, "MMMCMXCIX");
 
-#test when_addend_one_has_a_bad_character_it_results_in_invalid_argument
+#test given_a_bad_character_in_first_addend_adding_results_in_invalid_argument
 	char* sum = malloc(16);
 	ck_assert_int_eq(INVALID_ARGUMENT, add("A", "I", sum));
+	ck_assert_str_eq(sum, "");
+
+#test given_a_bad_character_in_second_addend_adding_results_in_invalid_argument
+	char* sum = malloc(16);
+	ck_assert_int_eq(INVALID_ARGUMENT, add("I", "B", sum));
 	ck_assert_str_eq(sum, "");
 
 #test subtract_1_from_2

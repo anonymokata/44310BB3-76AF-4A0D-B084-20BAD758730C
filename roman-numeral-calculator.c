@@ -177,7 +177,10 @@ ReturnCode add(char* addend1, char* addend2, char* sum) {
 	if (INVALID_ARGUMENT == return_code) {
 		return return_code;
 	}
-	tally(addend2, &abacus);
+	return_code = tally(addend2, &abacus);
+	if (INVALID_ARGUMENT == return_code) {
+		return return_code;
+	}
 	adjust_counts(&abacus);
 	to_roman_numerals(&abacus, sum);
 
