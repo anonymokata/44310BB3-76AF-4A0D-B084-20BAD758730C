@@ -459,7 +459,7 @@ START_TEST(given_a_bad_character_in_second_addend_adding_results_in_invalid_char
 }
 END_TEST
 
-START_TEST(when_the_sum_is_greater_than_the_largerst_roman_numeral_then_adding_results_in_result_too_large_return_code)
+START_TEST(when_the_sum_is_greater_than_the_largest_roman_numeral_then_adding_results_in_result_too_large_return_code)
 {
 #line 230
 	char* sum = malloc(16);
@@ -739,6 +739,16 @@ START_TEST(given_a_bad_character_in_subtrahend_subtracting_results_in_invalid_ch
 }
 END_TEST
 
+START_TEST(when_the_difference_is_somehow_greater_than_the_largest_roman_numeral_then_subtracting_results_in_result_too_large_return_code)
+{
+#line 370
+	char* difference = malloc(16);
+	ck_assert_int_eq(RESULT_TOO_LARGE, subtract("MMMMI", "I", difference));
+	ck_assert_str_eq(difference, "");
+
+}
+END_TEST
+
 int main(void)
 {
     Suite *s1 = suite_create("Core");
@@ -792,7 +802,7 @@ int main(void)
     tcase_add_test(tc1_1, add_1500_and_2499);
     tcase_add_test(tc1_1, given_a_bad_character_in_first_addend_adding_results_in_invalid_character_return_code);
     tcase_add_test(tc1_1, given_a_bad_character_in_second_addend_adding_results_in_invalid_character_return_code);
-    tcase_add_test(tc1_1, when_the_sum_is_greater_than_the_largerst_roman_numeral_then_adding_results_in_result_too_large_return_code);
+    tcase_add_test(tc1_1, when_the_sum_is_greater_than_the_largest_roman_numeral_then_adding_results_in_result_too_large_return_code);
     tcase_add_test(tc1_1, subtract_1_from_2);
     tcase_add_test(tc1_1, subtract_1_from_3);
     tcase_add_test(tc1_1, subtract_1_from_5);
@@ -820,6 +830,7 @@ int main(void)
     tcase_add_test(tc1_1, subtract_3998_from_3999);
     tcase_add_test(tc1_1, given_a_bad_character_in_minuend_subtracting_results_in_invalid_character_return_code);
     tcase_add_test(tc1_1, given_a_bad_character_in_subtrahend_subtracting_results_in_invalid_character_return_code);
+    tcase_add_test(tc1_1, when_the_difference_is_somehow_greater_than_the_largest_roman_numeral_then_subtracting_results_in_result_too_large_return_code);
 
     srunner_run_all(sr, CK_ENV);
     nf = srunner_ntests_failed(sr);

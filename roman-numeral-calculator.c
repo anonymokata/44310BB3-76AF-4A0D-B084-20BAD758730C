@@ -207,7 +207,8 @@ ReturnCode subtract(char* minuend, char* subtrahend, char* difference) {
 	return_code = subtractive_tally(subtrahend, &abacus);
 	if (INVALID_CHARACTER == return_code) { return return_code; }
 
-	adjust_counts(&abacus);
+	return_code = adjust_counts(&abacus);
+	if (RESULT_TOO_LARGE == return_code) { return return_code; }
 	to_roman_numerals(&abacus, difference);
 
 	return return_code;
