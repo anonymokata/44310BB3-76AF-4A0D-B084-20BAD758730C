@@ -123,7 +123,12 @@ ReturnCode subtractive_tally(char* input, struct Abacus* abacus) {
 	return SUCCESS;
 }
 
-void adjust_counts(struct Abacus* abacus) {
+int is_too_large(struct Abacus* abacus) {
+	int last_row = abacus_row_count - 1;
+	return abacus->rows[last_row].count >= (ratio_to_next_row(last_row) - 1);
+}
+
+ReturnCode adjust_counts(struct Abacus* abacus) {
 	int index;
 	int ratio;
 
@@ -135,6 +140,8 @@ void adjust_counts(struct Abacus* abacus) {
 			abacus->rows[index].count -= ratio;
 		}
 	}
+
+	return is_too_large(abacus) ? RESULT_TOO_LARGE : SUCCESS;
 }
 
 void append(char* string, char symbol, int* index) {
@@ -184,7 +191,8 @@ ReturnCode add(char* addend1, char* addend2, char* sum) {
 	return_code = tally(addend2, &abacus);
 	if (INVALID_CHARACTER == return_code) { return return_code; }
 
-	adjust_counts(&abacus);
+	return_code = adjust_counts(&abacus);
+	if (RESULT_TOO_LARGE == return_code) { return return_code; }
 	to_roman_numerals(&abacus, sum);
 
 	return return_code;
@@ -198,7 +206,7 @@ ReturnCode subtract(char* minuend, char* subtrahend, char* difference) {
 	if (INVALID_CHARACTER == return_code) { return return_code; }
 	return_code = subtractive_tally(subtrahend, &abacus);
 	if (INVALID_CHARACTER == return_code) { return return_code; }
-	
+
 	adjust_counts(&abacus);
 	to_roman_numerals(&abacus, difference);
 

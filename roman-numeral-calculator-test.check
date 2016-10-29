@@ -216,14 +216,19 @@
 	ck_assert_int_eq(SUCCESS, add("MD", "MMCDXCIX", sum));
 	ck_assert_str_eq(sum, "MMMCMXCIX");
 
-#test given_a_bad_character_in_first_addend_adding_results_in_invalid_character
+#test given_a_bad_character_in_first_addend_adding_results_in_invalid_character_return_code
 	char* sum = malloc(16);
 	ck_assert_int_eq(INVALID_CHARACTER, add("A", "I", sum));
 	ck_assert_str_eq(sum, "");
 
-#test given_a_bad_character_in_second_addend_adding_results_in_invalid_character
+#test given_a_bad_character_in_second_addend_adding_results_in_invalid_character_return_code
 	char* sum = malloc(16);
 	ck_assert_int_eq(INVALID_CHARACTER, add("I", "B", sum));
+	ck_assert_str_eq(sum, "");
+
+#test when_the_sum_is_greater_than_the_largerst_roman_numeral_then_adding_results_in_result_too_large_return_code
+	char* sum = malloc(16);
+	ck_assert_int_eq(RESULT_TOO_LARGE, add("MM", "MM", sum));
 	ck_assert_str_eq(sum, "");
 
 #test subtract_1_from_2
@@ -351,12 +356,12 @@
 	ck_assert_int_eq(SUCCESS, subtract("MMMCMXCIX", "MMMCMXCVIII", difference));
 	ck_assert_str_eq(difference, "I");
 
-#test given_a_bad_character_in_minuend_subtracting_results_in_invalid_character
+#test given_a_bad_character_in_minuend_subtracting_results_in_invalid_character_return_code
 	char* difference = malloc(16);
 	ck_assert_int_eq(INVALID_CHARACTER, subtract("F", "I", difference));
 	ck_assert_str_eq(difference, "");
 
-#test given_a_bad_character_in_subtrahend_subtracting_results_in_invalid_character
+#test given_a_bad_character_in_subtrahend_subtracting_results_in_invalid_character_return_code
 	char* difference = malloc(16);
 	ck_assert_int_eq(INVALID_CHARACTER, subtract("II", "G", difference));
 	ck_assert_str_eq(difference, "");

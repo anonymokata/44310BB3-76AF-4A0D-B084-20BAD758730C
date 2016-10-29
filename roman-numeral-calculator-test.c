@@ -439,7 +439,7 @@ START_TEST(add_1500_and_2499)
 }
 END_TEST
 
-START_TEST(given_a_bad_character_in_first_addend_adding_results_in_invalid_character)
+START_TEST(given_a_bad_character_in_first_addend_adding_results_in_invalid_character_return_code)
 {
 #line 220
 	char* sum = malloc(16);
@@ -449,7 +449,7 @@ START_TEST(given_a_bad_character_in_first_addend_adding_results_in_invalid_chara
 }
 END_TEST
 
-START_TEST(given_a_bad_character_in_second_addend_adding_results_in_invalid_character)
+START_TEST(given_a_bad_character_in_second_addend_adding_results_in_invalid_character_return_code)
 {
 #line 225
 	char* sum = malloc(16);
@@ -459,9 +459,19 @@ START_TEST(given_a_bad_character_in_second_addend_adding_results_in_invalid_char
 }
 END_TEST
 
-START_TEST(subtract_1_from_2)
+START_TEST(when_the_sum_is_greater_than_the_largerst_roman_numeral_then_adding_results_in_result_too_large_return_code)
 {
 #line 230
+	char* sum = malloc(16);
+	ck_assert_int_eq(RESULT_TOO_LARGE, add("MM", "MM", sum));
+	ck_assert_str_eq(sum, "");
+
+}
+END_TEST
+
+START_TEST(subtract_1_from_2)
+{
+#line 235
 	char* difference = malloc(16);
 	ck_assert_int_eq(SUCCESS, subtract("II", "I", difference));
 	ck_assert_str_eq(difference, "I");
@@ -471,7 +481,7 @@ END_TEST
 
 START_TEST(subtract_1_from_3)
 {
-#line 235
+#line 240
 	char* difference = malloc(16);
 	ck_assert_int_eq(SUCCESS, subtract("III", "I", difference));
 	ck_assert_str_eq(difference, "II");
@@ -481,7 +491,7 @@ END_TEST
 
 START_TEST(subtract_1_from_5)
 {
-#line 240
+#line 245
 	char* difference = malloc(16);
 	ck_assert_int_eq(SUCCESS, subtract("V", "I", difference));
 	ck_assert_str_eq(difference, "IV");
@@ -491,7 +501,7 @@ END_TEST
 
 START_TEST(subtract_5_from_6)
 {
-#line 245
+#line 250
 	char* difference = malloc(16);
 	ck_assert_int_eq(SUCCESS, subtract("VI", "V", difference));
 	ck_assert_str_eq(difference, "I");
@@ -501,7 +511,7 @@ END_TEST
 
 START_TEST(subtract_4_from_5)
 {
-#line 250
+#line 255
 	char* difference = malloc(16);
 	ck_assert_int_eq(SUCCESS, subtract("V", "IV", difference));
 	ck_assert_str_eq(difference, "I");
@@ -511,7 +521,7 @@ END_TEST
 
 START_TEST(subtract_6_from_8)
 {
-#line 255
+#line 260
 	char* difference = malloc(16);
 	ck_assert_int_eq(SUCCESS, subtract("VIII", "VI", difference));
 	ck_assert_str_eq(difference, "II");
@@ -521,7 +531,7 @@ END_TEST
 
 START_TEST(subtract_1_from_9)
 {
-#line 260
+#line 265
 	char* difference = malloc(16);
 	ck_assert_int_eq(SUCCESS, subtract("IX", "I", difference));
 	ck_assert_str_eq(difference, "VIII");
@@ -531,7 +541,7 @@ END_TEST
 
 START_TEST(subtract_5_from_10)
 {
-#line 265
+#line 270
 	char* difference = malloc(16);
 	ck_assert_int_eq(SUCCESS, subtract("X", "V", difference));
 	ck_assert_str_eq(difference, "V");
@@ -541,7 +551,7 @@ END_TEST
 
 START_TEST(subtract_1_from_10)
 {
-#line 270
+#line 275
 	char* difference = malloc(16);
 	ck_assert_int_eq(SUCCESS, subtract("X", "I", difference));
 	ck_assert_str_eq(difference, "IX");
@@ -551,7 +561,7 @@ END_TEST
 
 START_TEST(subtract_10_from_11)
 {
-#line 275
+#line 280
 	char* difference = malloc(16);
 	ck_assert_int_eq(SUCCESS, subtract("XI", "X", difference));
 	ck_assert_str_eq(difference, "I");
@@ -561,7 +571,7 @@ END_TEST
 
 START_TEST(subtract_19_from_20)
 {
-#line 280
+#line 285
 	char* difference = malloc(16);
 	ck_assert_int_eq(SUCCESS, subtract("XX", "XIX", difference));
 	ck_assert_str_eq(difference, "I");
@@ -571,7 +581,7 @@ END_TEST
 
 START_TEST(subtract_50_from_51)
 {
-#line 285
+#line 290
 	char* difference = malloc(16);
 	ck_assert_int_eq(SUCCESS, subtract("LI", "L", difference));
 	ck_assert_str_eq(difference, "I");
@@ -581,7 +591,7 @@ END_TEST
 
 START_TEST(subtract_1_from_50)
 {
-#line 290
+#line 295
 	char* difference = malloc(16);
 	ck_assert_int_eq(SUCCESS, subtract("L", "I", difference));
 	ck_assert_str_eq(difference, "XLIX");
@@ -591,7 +601,7 @@ END_TEST
 
 START_TEST(subtract_5_from_50)
 {
-#line 295
+#line 300
 	char* difference = malloc(16);
 	ck_assert_int_eq(SUCCESS, subtract("L", "V", difference));
 	ck_assert_str_eq(difference, "XLV");
@@ -601,7 +611,7 @@ END_TEST
 
 START_TEST(subtract_10_from_50)
 {
-#line 300
+#line 305
 	char* difference = malloc(16);
 	ck_assert_int_eq(SUCCESS, subtract("L", "X", difference));
 	ck_assert_str_eq(difference, "XL");
@@ -611,7 +621,7 @@ END_TEST
 
 START_TEST(subtract_40_from_50)
 {
-#line 305
+#line 310
 	char* difference = malloc(16);
 	ck_assert_int_eq(SUCCESS, subtract("L", "XL", difference));
 	ck_assert_str_eq(difference, "X");
@@ -621,7 +631,7 @@ END_TEST
 
 START_TEST(subtract_90_from_100)
 {
-#line 310
+#line 315
 	char* difference = malloc(16);
 	ck_assert_int_eq(SUCCESS, subtract("C", "XC", difference));
 	ck_assert_str_eq(difference, "X");
@@ -631,7 +641,7 @@ END_TEST
 
 START_TEST(subtract_95_from_100)
 {
-#line 315
+#line 320
 	char* difference = malloc(16);
 	ck_assert_int_eq(SUCCESS, subtract("C", "XCV", difference));
 	ck_assert_str_eq(difference, "V");
@@ -641,7 +651,7 @@ END_TEST
 
 START_TEST(subtract_400_from_500)
 {
-#line 320
+#line 325
 	char* difference = malloc(16);
 	ck_assert_int_eq(SUCCESS, subtract("D", "CD", difference));
 	ck_assert_str_eq(difference, "C");
@@ -651,7 +661,7 @@ END_TEST
 
 START_TEST(subtract_450_from_500)
 {
-#line 325
+#line 330
 	char* difference = malloc(16);
 	ck_assert_int_eq(SUCCESS, subtract("D", "CDL", difference));
 	ck_assert_str_eq(difference, "L");
@@ -661,7 +671,7 @@ END_TEST
 
 START_TEST(subtract_490_from_500)
 {
-#line 330
+#line 335
 	char* difference = malloc(16);
 	ck_assert_int_eq(SUCCESS, subtract("D", "CDXC", difference));
 	ck_assert_str_eq(difference, "X");
@@ -671,7 +681,7 @@ END_TEST
 
 START_TEST(subtract_500_from_1000)
 {
-#line 335
+#line 340
 	char* difference = malloc(16);
 	ck_assert_int_eq(SUCCESS, subtract("M", "D", difference));
 	ck_assert_str_eq(difference, "D");
@@ -681,7 +691,7 @@ END_TEST
 
 START_TEST(subtract_3005_from_3999)
 {
-#line 340
+#line 345
 	char* difference = malloc(16);
 	ck_assert_int_eq(SUCCESS, subtract("MMMCMXCIX", "MMMV", difference));
 	ck_assert_str_eq(difference, "CMXCIV");
@@ -691,7 +701,7 @@ END_TEST
 
 START_TEST(subtract_3900_from_3999)
 {
-#line 345
+#line 350
 	char* difference = malloc(16);
 	ck_assert_int_eq(SUCCESS, subtract("MMMCMXCIX", "MMMCM", difference));
 	ck_assert_str_eq(difference, "XCIX");
@@ -701,7 +711,7 @@ END_TEST
 
 START_TEST(subtract_3998_from_3999)
 {
-#line 350
+#line 355
 	char* difference = malloc(16);
 	ck_assert_int_eq(SUCCESS, subtract("MMMCMXCIX", "MMMCMXCVIII", difference));
 	ck_assert_str_eq(difference, "I");
@@ -709,9 +719,9 @@ START_TEST(subtract_3998_from_3999)
 }
 END_TEST
 
-START_TEST(given_a_bad_character_in_minuend_subtracting_results_in_invalid_character)
+START_TEST(given_a_bad_character_in_minuend_subtracting_results_in_invalid_character_return_code)
 {
-#line 355
+#line 360
 	char* difference = malloc(16);
 	ck_assert_int_eq(INVALID_CHARACTER, subtract("F", "I", difference));
 	ck_assert_str_eq(difference, "");
@@ -719,9 +729,9 @@ START_TEST(given_a_bad_character_in_minuend_subtracting_results_in_invalid_chara
 }
 END_TEST
 
-START_TEST(given_a_bad_character_in_subtrahend_subtracting_results_in_invalid_character)
+START_TEST(given_a_bad_character_in_subtrahend_subtracting_results_in_invalid_character_return_code)
 {
-#line 360
+#line 365
 	char* difference = malloc(16);
 	ck_assert_int_eq(INVALID_CHARACTER, subtract("II", "G", difference));
 	ck_assert_str_eq(difference, "");
@@ -780,8 +790,9 @@ int main(void)
     tcase_add_test(tc1_1, add_999_and_2);
     tcase_add_test(tc1_1, add_1000_and_1000);
     tcase_add_test(tc1_1, add_1500_and_2499);
-    tcase_add_test(tc1_1, given_a_bad_character_in_first_addend_adding_results_in_invalid_character);
-    tcase_add_test(tc1_1, given_a_bad_character_in_second_addend_adding_results_in_invalid_character);
+    tcase_add_test(tc1_1, given_a_bad_character_in_first_addend_adding_results_in_invalid_character_return_code);
+    tcase_add_test(tc1_1, given_a_bad_character_in_second_addend_adding_results_in_invalid_character_return_code);
+    tcase_add_test(tc1_1, when_the_sum_is_greater_than_the_largerst_roman_numeral_then_adding_results_in_result_too_large_return_code);
     tcase_add_test(tc1_1, subtract_1_from_2);
     tcase_add_test(tc1_1, subtract_1_from_3);
     tcase_add_test(tc1_1, subtract_1_from_5);
@@ -807,8 +818,8 @@ int main(void)
     tcase_add_test(tc1_1, subtract_3005_from_3999);
     tcase_add_test(tc1_1, subtract_3900_from_3999);
     tcase_add_test(tc1_1, subtract_3998_from_3999);
-    tcase_add_test(tc1_1, given_a_bad_character_in_minuend_subtracting_results_in_invalid_character);
-    tcase_add_test(tc1_1, given_a_bad_character_in_subtrahend_subtracting_results_in_invalid_character);
+    tcase_add_test(tc1_1, given_a_bad_character_in_minuend_subtracting_results_in_invalid_character_return_code);
+    tcase_add_test(tc1_1, given_a_bad_character_in_subtrahend_subtracting_results_in_invalid_character_return_code);
 
     srunner_run_all(sr, CK_ENV);
     nf = srunner_ntests_failed(sr);
