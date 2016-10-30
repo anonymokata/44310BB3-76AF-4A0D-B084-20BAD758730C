@@ -60,6 +60,27 @@ int is_preceding_subtractor(int abacus_index, int previous_abacus_index) {
 			abacus_index + 2 == previous_abacus_index);
 }
 
+int is_too_large(struct Abacus* abacus) {
+	int last_row = abacus_row_count - 1;
+	return abacus->rows[last_row].count >= (ratio_to_next_row(last_row) - 1);
+}
+
+ReturnCode adjust_counts(struct Abacus* abacus) {
+	int index;
+	int ratio;
+
+	for (index = 0; index < abacus_row_count - 1; index++) {
+		ratio = ratio_to_next_row(index);
+
+		while (abacus->rows[index].count >= ratio) {
+			abacus->rows[index + 1].count++;
+			abacus->rows[index].count -= ratio;
+		}
+	}
+
+	return is_too_large(abacus) ? RESULT_TOO_LARGE : SUCCESS;
+}
+
 ReturnCode tally(char* input, struct Abacus* abacus) {
 	int input_index;
 	int end = strlen(input) - 1;
@@ -88,60 +109,48 @@ ReturnCode tally(char* input, struct Abacus* abacus) {
 	return SUCCESS;
 }
 
-void borrow_if_necessary(int row_index, struct Abacus* abacus) {
-	if (abacus->rows[row_index].count == 0 && (row_index + 1) < abacus_row_count) {
-		borrow_if_necessary(row_index + 1, abacus);
-		abacus->rows[row_index + 1].count--;
-		abacus->rows[row_index].count += ratio_to_next_row(row_index);
+ReturnCode borrow_if_necessary(int row_index, struct Abacus* abacus) {
+	ReturnCode code = SUCCESS;
+	if (abacus->rows[row_index].count == 0) {
+		if ((row_index + 1) < abacus_row_count) {
+			code = borrow_if_necessary(row_index + 1, abacus);
+			if (SUCCESS == code) {
+				abacus->rows[row_index + 1].count--;
+				abacus->rows[row_index].count += ratio_to_next_row(row_index);
+			}
+		} else {
+			code = RESULT_TOO_SMALL;
+		}
 	}
+	return code;
 }
 
 ReturnCode subtractive_tally(char* input, struct Abacus* abacus) {
 	int input_index;	
 	int end = strlen(input) - 1;
 	int abacus_index;
-	int previous_abacus_index = NULL;
+	int next_abacus_index;
 
 	for (input_index = end; input_index >= 0; input_index--) {
 		abacus_index = get_abacus_index(input[input_index], abacus);
+		next_abacus_index = get_abacus_index(input[input_index - 1], abacus);
 		if (abacus_index < 0) {
 			return INVALID_CHARACTER;
 		}
 
-		if (is_preceding_subtractor(abacus_index, previous_abacus_index)) {
+		if (next_abacus_index >= 0 && is_preceding_subtractor(next_abacus_index, abacus_index)) {
+			abacus->rows[next_abacus_index].count++;
+			adjust_counts(abacus);
+			input_index--;
+		}
 
-			abacus->rows[abacus_index].count++;
-
-		} else {
-			borrow_if_necessary(abacus_index, abacus);
-			abacus->rows[abacus_index].count--;			
-		} 
-
-		previous_abacus_index = abacus_index;
+		ReturnCode code = borrow_if_necessary(abacus_index, abacus);
+		if (SUCCESS != code) { return code; }
+		
+		abacus->rows[abacus_index].count--;			
 	}
 
 	return SUCCESS;
-}
-
-int is_too_large(struct Abacus* abacus) {
-	int last_row = abacus_row_count - 1;
-	return abacus->rows[last_row].count >= (ratio_to_next_row(last_row) - 1);
-}
-
-ReturnCode adjust_counts(struct Abacus* abacus) {
-	int index;
-	int ratio;
-
-	for (index = 0; index < abacus_row_count - 1; index++) {
-		ratio = ratio_to_next_row(index);
-
-		while (abacus->rows[index].count >= ratio) {
-			abacus->rows[index + 1].count++;
-			abacus->rows[index].count -= ratio;
-		}
-	}
-
-	return is_too_large(abacus) ? RESULT_TOO_LARGE : SUCCESS;
 }
 
 void append(char* string, char symbol, int* index) {
@@ -205,7 +214,7 @@ ReturnCode subtract(char* minuend, char* subtrahend, char* difference) {
 	return_code = tally(minuend, &abacus);
 	if (INVALID_CHARACTER == return_code) { return return_code; }
 	return_code = subtractive_tally(subtrahend, &abacus);
-	if (INVALID_CHARACTER == return_code) { return return_code; }
+	if (SUCCESS != return_code) { return return_code; }
 
 	return_code = adjust_counts(&abacus);
 	if (RESULT_TOO_LARGE == return_code) { return return_code; }
