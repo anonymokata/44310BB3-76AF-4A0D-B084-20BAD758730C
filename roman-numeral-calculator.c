@@ -146,7 +146,7 @@ ReturnCode subtractive_tally(char* input, struct Abacus* abacus) {
 
 		ReturnCode code = borrow_if_necessary(abacus_index, abacus);
 		if (SUCCESS != code) { return code; }
-		
+
 		abacus->rows[abacus_index].count--;			
 	}
 
@@ -193,32 +193,29 @@ void to_roman_numerals(struct Abacus* abacus, char* result) {
 
 ReturnCode add(char* addend1, char* addend2, char* sum) {
 	struct Abacus abacus = initialize_abacus();
-	ReturnCode return_code = SUCCESS;
-	
-	return_code = tally(addend1, &abacus);
-	if (INVALID_CHARACTER == return_code) { return return_code; }
-	return_code = tally(addend2, &abacus);
-	if (INVALID_CHARACTER == return_code) { return return_code; }
+	ReturnCode code = tally(addend1, &abacus);
+	if (SUCCESS != code) { return code; }
+	code = tally(addend2, &abacus);
+	if (SUCCESS != code) { return code; }
 
-	return_code = adjust_counts(&abacus);
-	if (RESULT_TOO_LARGE == return_code) { return return_code; }
+	code = adjust_counts(&abacus);
+	if (SUCCESS != code) { return code; }
 	to_roman_numerals(&abacus, sum);
 
-	return return_code;
+	return code;
 }
 
 ReturnCode subtract(char* minuend, char* subtrahend, char* difference) {
 	struct Abacus abacus = initialize_abacus();
-	ReturnCode return_code = SUCCESS;
 
-	return_code = tally(minuend, &abacus);
-	if (INVALID_CHARACTER == return_code) { return return_code; }
-	return_code = subtractive_tally(subtrahend, &abacus);
-	if (SUCCESS != return_code) { return return_code; }
+	ReturnCode code = tally(minuend, &abacus);
+	if (SUCCESS != code) { return code; }
+	code = subtractive_tally(subtrahend, &abacus);
+	if (SUCCESS != code) { return code; }
 
-	return_code = adjust_counts(&abacus);
-	if (RESULT_TOO_LARGE == return_code) { return return_code; }
+	code = adjust_counts(&abacus);
+	if (SUCCESS != code) { return code; }
 	to_roman_numerals(&abacus, difference);
 
-	return return_code;
+	return code;
 }
