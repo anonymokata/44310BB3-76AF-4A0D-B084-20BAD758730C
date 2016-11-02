@@ -376,3 +376,8 @@
 	ck_assert_int_eq(RESULT_TOO_SMALL, subtract("MMMCMXCVIII", "MMMCMXCIX", difference));
 	ck_assert_str_eq(difference, "");
 
+#test when_the_difference_is_zero_then_subtracting_results_in_result_too_small_return_code
+	char* difference = malloc(16);
+	ck_assert_int_eq(RESULT_TOO_SMALL, subtract("MMMCMXCIX", "MMMCMXCIX", difference));
+	ck_assert_str_eq(difference, "");
+

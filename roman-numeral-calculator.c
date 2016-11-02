@@ -65,6 +65,16 @@ int is_too_large(struct Abacus* abacus) {
 	return abacus->rows[last_row].count >= (ratio_to_next_row(last_row) - 1);
 }
 
+int is_too_small(struct Abacus* abacus) {
+	int index;
+	for (index = 0; index < abacus_row_count; index++) {
+		if (abacus->rows[index].count > 0) {
+			return 0;
+		}
+	}
+	return 1;
+}
+
 ReturnCode adjust_counts(struct Abacus* abacus) {
 	int index;
 	int ratio;
@@ -150,7 +160,7 @@ ReturnCode subtractive_tally(char* input, struct Abacus* abacus) {
 		abacus->rows[abacus_index].count--;			
 	}
 
-	return SUCCESS;
+	return is_too_small(abacus) ? RESULT_TOO_SMALL : SUCCESS;
 }
 
 void append(char* string, char symbol, int* index) {

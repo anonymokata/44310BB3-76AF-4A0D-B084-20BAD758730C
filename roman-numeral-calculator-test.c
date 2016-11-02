@@ -759,6 +759,16 @@ START_TEST(when_the_difference_is_less_than_zero_then_subtracting_results_in_res
 }
 END_TEST
 
+START_TEST(when_the_difference_is_zero_then_subtracting_results_in_result_too_small_return_code)
+{
+#line 380
+	char* difference = malloc(16);
+	ck_assert_int_eq(RESULT_TOO_SMALL, subtract("MMMCMXCIX", "MMMCMXCIX", difference));
+	ck_assert_str_eq(difference, "");
+
+}
+END_TEST
+
 int main(void)
 {
     Suite *s1 = suite_create("Core");
@@ -842,6 +852,7 @@ int main(void)
     tcase_add_test(tc1_1, given_a_bad_character_in_subtrahend_subtracting_results_in_invalid_character_return_code);
     tcase_add_test(tc1_1, when_the_difference_is_somehow_greater_than_the_largest_roman_numeral_then_subtracting_results_in_result_too_large_return_code);
     tcase_add_test(tc1_1, when_the_difference_is_less_than_zero_then_subtracting_results_in_result_too_small_return_code);
+    tcase_add_test(tc1_1, when_the_difference_is_zero_then_subtracting_results_in_result_too_small_return_code);
 
     srunner_run_all(sr, CK_ENV);
     nf = srunner_ntests_failed(sr);
