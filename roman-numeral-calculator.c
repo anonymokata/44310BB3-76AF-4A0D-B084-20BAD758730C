@@ -1,4 +1,3 @@
-#include <stdlib.h>
 #include <string.h>
 
 #include "roman-numeral-calculator.h"
@@ -33,15 +32,15 @@ struct Abacus initialize_abacus(void) {
     return abacus;
 }
 
-int is_even(int number) {
+static int is_even(int number) {
     return number % 2 == 0 ? 1 : 0;
 }
 
-int ratio_to_next_row(int row_index) {
+static int ratio_to_next_row(int row_index) {
     return is_even(row_index) ? ratio_to_next_row_odd : ratio_to_next_row_even;
 }
 
-int get_abacus_index(char symbol, struct Abacus* abacus) {
+static int get_abacus_index(char symbol, struct Abacus* abacus) {
     int index;
 
     for (index = 0; index < abacus_row_count; index++) {
@@ -53,19 +52,19 @@ int get_abacus_index(char symbol, struct Abacus* abacus) {
     return -1;
 }
 
-int is_preceding_subtractor(int abacus_index, int previous_abacus_index) {
+static int is_preceding_subtractor(int abacus_index, int previous_abacus_index) {
     return is_even(abacus_index) && 
             abacus_index != (abacus_row_count - 1) && 
             (abacus_index + 1 == previous_abacus_index || 
             abacus_index + 2 == previous_abacus_index);
 }
 
-int is_too_large(struct Abacus* abacus) {
+static int is_too_large(struct Abacus* abacus) {
     int last_row = abacus_row_count - 1;
     return abacus->rows[last_row].count >= (ratio_to_next_row(last_row) - 1);
 }
 
-int is_too_small(struct Abacus* abacus) {
+static int is_too_small(struct Abacus* abacus) {
     int index;
     for (index = 0; index < abacus_row_count; index++) {
         if (abacus->rows[index].count > 0) {
@@ -75,7 +74,7 @@ int is_too_small(struct Abacus* abacus) {
     return 1;
 }
 
-ReturnCode adjust_counts(struct Abacus* abacus) {
+static ReturnCode adjust_counts(struct Abacus* abacus) {
     int index;
     int ratio;
 
@@ -91,7 +90,7 @@ ReturnCode adjust_counts(struct Abacus* abacus) {
     return is_too_large(abacus) ? RESULT_TOO_LARGE : SUCCESS;
 }
 
-ReturnCode tally(char* input, struct Abacus* abacus) {
+static ReturnCode tally(char* input, struct Abacus* abacus) {
     int input_index;
     int end = strlen(input) - 1;
     int abacus_index;
@@ -119,7 +118,7 @@ ReturnCode tally(char* input, struct Abacus* abacus) {
     return SUCCESS;
 }
 
-ReturnCode borrow_if_necessary(int row_index, struct Abacus* abacus) {
+static ReturnCode borrow_if_necessary(int row_index, struct Abacus* abacus) {
     ReturnCode code = SUCCESS;
     if (abacus->rows[row_index].count == 0) {
         if ((row_index + 1) < abacus_row_count) {
@@ -135,7 +134,7 @@ ReturnCode borrow_if_necessary(int row_index, struct Abacus* abacus) {
     return code;
 }
 
-ReturnCode subtractive_tally(char* input, struct Abacus* abacus) {
+static ReturnCode subtractive_tally(char* input, struct Abacus* abacus) {
     int input_index;    
     int end = strlen(input) - 1;
     int abacus_index;
@@ -163,19 +162,19 @@ ReturnCode subtractive_tally(char* input, struct Abacus* abacus) {
     return is_too_small(abacus) ? RESULT_TOO_SMALL : SUCCESS;
 }
 
-void append(char* string, char symbol, int* index) {
+static void append(char* string, char symbol, int* index) {
     string[*index] = symbol;
     (*index)++;
 }
 
-void append_n_times(char* string, char symbol, int* index, int n) {
+static void append_n_times(char* string, char symbol, int* index, int n) {
     int count;
     for (count = 0; count < n; count++) {
         append(string, symbol, index);
     }   
 }
 
-void to_roman_numerals(struct Abacus* abacus, char* result) {
+static void to_roman_numerals(struct Abacus* abacus, char* result) {
     int result_index = 0;
     int abacus_index;
 
