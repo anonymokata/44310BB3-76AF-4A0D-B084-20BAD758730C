@@ -32,15 +32,15 @@ struct Abacus initialize_abacus(void) {
     return abacus;
 }
 
-static int is_even(int number) {
+static int is_even(const int number) {
     return number % 2 == 0 ? 1 : 0;
 }
 
-static int ratio_to_next_row(int row_index) {
+static int ratio_to_next_row(const int row_index) {
     return is_even(row_index) ? ratio_to_next_row_odd : ratio_to_next_row_even;
 }
 
-static int get_abacus_index(char symbol, struct Abacus* abacus) {
+static int get_abacus_index(const char symbol, const struct Abacus* abacus) {
     int index;
 
     for (index = 0; index < abacus_row_count; index++) {
@@ -52,19 +52,19 @@ static int get_abacus_index(char symbol, struct Abacus* abacus) {
     return -1;
 }
 
-static int is_preceding_subtractor(int abacus_index, int previous_abacus_index) {
+static int is_preceding_subtractor(const int abacus_index, const int previous_abacus_index) {
     return is_even(abacus_index) && 
             abacus_index != (abacus_row_count - 1) && 
             (abacus_index + 1 == previous_abacus_index || 
             abacus_index + 2 == previous_abacus_index);
 }
 
-static int is_too_large(struct Abacus* abacus) {
-    int last_row = abacus_row_count - 1;
+static int is_too_large(const struct Abacus* abacus) {
+    const int last_row = abacus_row_count - 1;
     return abacus->rows[last_row].count >= (ratio_to_next_row(last_row) - 1);
 }
 
-static int is_too_small(struct Abacus* abacus) {
+static int is_too_small(const struct Abacus* abacus) {
     int index;
     for (index = 0; index < abacus_row_count; index++) {
         if (abacus->rows[index].count > 0) {
@@ -90,9 +90,9 @@ static ReturnCode adjust_counts(struct Abacus* abacus) {
     return is_too_large(abacus) ? RESULT_TOO_LARGE : SUCCESS;
 }
 
-static ReturnCode tally(char* input, struct Abacus* abacus) {
+static ReturnCode tally(const char* input, struct Abacus* abacus) {
+    const int end = strlen(input) - 1;
     int input_index;
-    int end = strlen(input) - 1;
     int abacus_index;
     int previous_abacus_index = NULL;
 
@@ -118,11 +118,14 @@ static ReturnCode tally(char* input, struct Abacus* abacus) {
     return SUCCESS;
 }
 
-static ReturnCode borrow_if_necessary(int row_index, struct Abacus* abacus) {
+static ReturnCode borrow_if_necessary(const int row_index, struct Abacus* abacus) {
     ReturnCode code = SUCCESS;
+
     if (abacus->rows[row_index].count == 0) {
+
         if ((row_index + 1) < abacus_row_count) {
             code = borrow_if_necessary(row_index + 1, abacus);
+
             if (SUCCESS == code) {
                 abacus->rows[row_index + 1].count--;
                 abacus->rows[row_index].count += ratio_to_next_row(row_index);
@@ -131,12 +134,13 @@ static ReturnCode borrow_if_necessary(int row_index, struct Abacus* abacus) {
             code = RESULT_TOO_SMALL;
         }
     }
+
     return code;
 }
 
-static ReturnCode subtractive_tally(char* input, struct Abacus* abacus) {
+static ReturnCode subtractive_tally(const char* input, struct Abacus* abacus) {
+    const int end = strlen(input) - 1;
     int input_index;    
-    int end = strlen(input) - 1;
     int abacus_index;
     int next_abacus_index;
 
@@ -162,19 +166,19 @@ static ReturnCode subtractive_tally(char* input, struct Abacus* abacus) {
     return is_too_small(abacus) ? RESULT_TOO_SMALL : SUCCESS;
 }
 
-static void append(char* string, char symbol, int* index) {
+static void append(char* string, const char symbol, int* index) {
     string[*index] = symbol;
     (*index)++;
 }
 
-static void append_n_times(char* string, char symbol, int* index, int n) {
+static void append_n_times(char* string, const char symbol, int* index, const int n) {
     int count;
     for (count = 0; count < n; count++) {
         append(string, symbol, index);
     }   
 }
 
-static void to_roman_numerals(struct Abacus* abacus, char* result) {
+static void to_roman_numerals(const struct Abacus* abacus, char* result) {
     int result_index = 0;
     int abacus_index;
 
@@ -200,8 +204,9 @@ static void to_roman_numerals(struct Abacus* abacus, char* result) {
     result[result_index] = '\0';
 }
 
-ReturnCode add(char* addend1, char* addend2, char* sum) {
+ReturnCode add(const char* addend1, const char* addend2, char* sum) {
     struct Abacus abacus = initialize_abacus();
+
     ReturnCode code = tally(addend1, &abacus);
     if (SUCCESS != code) { return code; }
     code = tally(addend2, &abacus);
@@ -214,7 +219,7 @@ ReturnCode add(char* addend1, char* addend2, char* sum) {
     return code;
 }
 
-ReturnCode subtract(char* minuend, char* subtrahend, char* difference) {
+ReturnCode subtract(const char* minuend, const char* subtrahend, char* difference) {
     struct Abacus abacus = initialize_abacus();
 
     ReturnCode code = tally(minuend, &abacus);

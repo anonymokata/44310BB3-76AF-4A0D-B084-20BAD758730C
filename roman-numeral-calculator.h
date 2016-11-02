@@ -3,8 +3,8 @@
 
 typedef enum { SUCCESS, INVALID_CHARACTER, RESULT_TOO_LARGE, RESULT_TOO_SMALL } ReturnCode;
 
-ReturnCode add(char* addend1, char* addend2, char* sum);
+ReturnCode add(const char* addend1, const char* addend2, char* sum);
 
-ReturnCode subtract(char* minuend, char* subtrahend, char* difference);
+ReturnCode subtract(const char* minuend, const char* subtrahend, char* difference);
 
 #endif
