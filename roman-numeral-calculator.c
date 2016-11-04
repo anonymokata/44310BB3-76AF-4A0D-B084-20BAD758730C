@@ -96,20 +96,20 @@ static ReturnCode tally(const char* numeral, struct Abacus* abacus) {
     const int end = strlen(numeral) - 1;
     int numeral_index;
     int abacus_index;
+    int next_abacus_index;
     int previous_abacus_index = NULL;
 
     for (numeral_index = end; numeral_index >= 0; numeral_index--) {
         abacus_index = get_abacus_index(numeral[numeral_index], abacus);
+        next_abacus_index = get_abacus_index(numeral[numeral_index - 1], abacus);
         if (abacus_index < 0) {
             return INVALID_CHARACTER;
         }
 
-        if (is_preceding_subtractor(abacus_index, previous_abacus_index)) {
-
-            abacus->rows[previous_abacus_index].count--;
-            int carry = (is_even(previous_abacus_index) ? ratio_to_next_next_row : ratio_to_next_row_odd) - 1;
-            abacus->rows[abacus_index].count += carry;
-
+        if (next_abacus_index >= 0 && is_preceding_subtractor(next_abacus_index, abacus_index)) {
+            int carry = (is_even(abacus_index) ? ratio_to_next_next_row : ratio_to_next_row_odd) - 1;
+            abacus->rows[next_abacus_index].count += carry;
+            numeral_index--;
         } else {
             abacus->rows[abacus_index].count++;
         }
