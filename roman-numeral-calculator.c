@@ -183,18 +183,18 @@ static void append_n_times(char* string, const char symbol, int* index, const in
 static void to_roman_numerals(const struct Abacus* abacus, char* result) {
     int result_index = 0;
     int abacus_index;
+    int previous_abacus_index;
 
     for (abacus_index = abacus_row_count - 1; abacus_index >= 0; abacus_index--) {
+        previous_abacus_index = abacus_index - 1;
 
-        if (!is_even(abacus_index) && abacus->rows[abacus_index - 1].count == (ratio_to_next_row_odd - 1)) {
+        if (!is_even(abacus_index) && abacus->rows[previous_abacus_index].count == (ratio_to_next_row_odd - 1)) {
 
-            append(result, abacus->rows[abacus_index - 1].symbol, &result_index);
-
-            if (abacus->rows[abacus_index].count == 0) {
-                append(result, abacus->rows[abacus_index].symbol, &result_index);
-            } else {
-                append(result, abacus->rows[abacus_index + 1].symbol, &result_index);
-            }
+            const int subtracted_abacus_index = abacus->rows[abacus_index].count == 0 
+                ? abacus_index 
+                : abacus_index + 1;
+            append(result, abacus->rows[previous_abacus_index].symbol, &result_index);
+            append(result, abacus->rows[subtracted_abacus_index].symbol, &result_index);
 
             abacus_index--;
 
