@@ -16,7 +16,7 @@ struct Abacus {
     struct Row rows[abacus_row_count];
 };
 
-typedef ReturnCode (*TallyFunction)(const char*, struct Abacus*);
+typedef ReturnCode (*TallyFunction)(const int, const int, int*, struct Abacus*);
 
 struct Abacus initialize_abacus(void) {
     struct Abacus abacus = {
@@ -54,11 +54,11 @@ static int get_abacus_index(const char symbol, const struct Abacus* abacus) {
     return -1;
 }
 
-static int is_preceding_subtractor(const int abacus_index, const int previous_abacus_index) {
-    return is_even(abacus_index) && 
-            abacus_index != (abacus_row_count - 1) && 
-            (abacus_index + 1 == previous_abacus_index || 
-            abacus_index + 2 == previous_abacus_index);
+static int is_preceding_subtractor(const int abacus_index, const int next_abacus_index) {
+    return is_even(next_abacus_index) && 
+            next_abacus_index != (abacus_row_count - 1) && 
+            (next_abacus_index + 1 == abacus_index || 
+            next_abacus_index + 2 == abacus_index);
 }
 
 static int is_too_large(const struct Abacus* abacus) {
@@ -92,29 +92,13 @@ static ReturnCode adjust_counts(struct Abacus* abacus) {
     return is_too_large(abacus) ? RESULT_TOO_LARGE : SUCCESS;
 }
 
-static ReturnCode tally(const char* numeral, struct Abacus* abacus) {
-    const int end = strlen(numeral) - 1;
-    int numeral_index;
-    int abacus_index;
-    int previous_abacus_index = NULL;
-
-    for (numeral_index = end; numeral_index >= 0; numeral_index--) {
-        abacus_index = get_abacus_index(numeral[numeral_index], abacus);
-        if (abacus_index < 0) {
-            return INVALID_CHARACTER;
-        }
-
-        if (is_preceding_subtractor(abacus_index, previous_abacus_index)) {
-
-            abacus->rows[previous_abacus_index].count--;
-            int carry = (is_even(previous_abacus_index) ? ratio_to_next_next_row : ratio_to_next_row_odd) - 1;
-            abacus->rows[abacus_index].count += carry;
-
-        } else {
-            abacus->rows[abacus_index].count++;
-        }
-
-        previous_abacus_index = abacus_index;
+static ReturnCode additive_tally(const int abacus_index, const int next_abacus_index, int* numeral_index, struct Abacus* abacus) {
+    if (next_abacus_index >= 0 && is_preceding_subtractor(abacus_index, next_abacus_index)) {
+        int carry = (is_even(abacus_index) ? ratio_to_next_next_row : ratio_to_next_row_odd) - 1;
+        abacus->rows[next_abacus_index].count += carry;
+        (*numeral_index)--;
+    } else {
+        abacus->rows[abacus_index].count++;
     }
 
     return SUCCESS;
@@ -140,8 +124,24 @@ static ReturnCode borrow_if_necessary(const int row_index, struct Abacus* abacus
     return code;
 }
 
-static ReturnCode subtractive_tally(const char* numeral, struct Abacus* abacus) {
+static ReturnCode subtractive_tally(const int abacus_index, const int next_abacus_index, int* numeral_index, struct Abacus* abacus) {
+    if (next_abacus_index >= 0 && is_preceding_subtractor(abacus_index, next_abacus_index)) {
+        abacus->rows[next_abacus_index].count++;
+        adjust_counts(abacus);
+        (*numeral_index)--;
+    }
+
+    ReturnCode code = borrow_if_necessary(abacus_index, abacus);
+    if (SUCCESS != code) { return code; }
+
+    abacus->rows[abacus_index].count--;
+
+    return code;
+}
+
+static ReturnCode iterate_over_numeral(const char* numeral, TallyFunction tally_function, struct Abacus* abacus) {
     const int end = strlen(numeral) - 1;
+    ReturnCode code = SUCCESS;
     int numeral_index;    
     int abacus_index;
     int next_abacus_index;
@@ -153,19 +153,11 @@ static ReturnCode subtractive_tally(const char* numeral, struct Abacus* abacus) 
             return INVALID_CHARACTER;
         }
 
-        if (next_abacus_index >= 0 && is_preceding_subtractor(next_abacus_index, abacus_index)) {
-            abacus->rows[next_abacus_index].count++;
-            adjust_counts(abacus);
-            numeral_index--;
-        }
-
-        ReturnCode code = borrow_if_necessary(abacus_index, abacus);
-        if (SUCCESS != code) { return code; }
-
-        abacus->rows[abacus_index].count--;
+        code = tally_function(abacus_index, next_abacus_index, &numeral_index, abacus);
+        if (code != SUCCESS) { return code; }
     }
 
-    return is_too_small(abacus) ? RESULT_TOO_SMALL : SUCCESS;
+    return code;
 }
 
 static void append(char* string, const char symbol, int* index) {
@@ -180,20 +172,20 @@ static void append_n_times(char* string, const char symbol, int* index, const in
     }   
 }
 
-static void to_roman_numerals(const struct Abacus* abacus, char* result) {
+static void to_numeral(const struct Abacus* abacus, char* result) {
     int result_index = 0;
     int abacus_index;
-    int previous_abacus_index;
+    int lower_abacus_index;
 
     for (abacus_index = abacus_row_count - 1; abacus_index >= 0; abacus_index--) {
-        previous_abacus_index = abacus_index - 1;
+        lower_abacus_index = abacus_index - 1;
 
-        if (!is_even(abacus_index) && abacus->rows[previous_abacus_index].count == (ratio_to_next_row_odd - 1)) {
+        if (!is_even(abacus_index) && abacus->rows[lower_abacus_index].count == (ratio_to_next_row_odd - 1)) {
 
             const int subtracted_abacus_index = abacus->rows[abacus_index].count == 0 
                 ? abacus_index 
                 : abacus_index + 1;
-            append(result, abacus->rows[previous_abacus_index].symbol, &result_index);
+            append(result, abacus->rows[lower_abacus_index].symbol, &result_index);
             append(result, abacus->rows[subtracted_abacus_index].symbol, &result_index);
 
             abacus_index--;
@@ -208,25 +200,29 @@ static void to_roman_numerals(const struct Abacus* abacus, char* result) {
 
 static ReturnCode compute(const char* numeral1, TallyFunction tally_function1, 
                           const char* numeral2, TallyFunction tally_function2, 
-                          char* resultNumeral) {
+                          char* result_numeral) {
     struct Abacus abacus = initialize_abacus();
 
-    ReturnCode code = tally_function1(numeral1, &abacus);
+    ReturnCode code = iterate_over_numeral(numeral1, tally_function1, &abacus);
     if (SUCCESS != code) { return code; }
-    code = tally_function2(numeral2, &abacus);
+
+    code = iterate_over_numeral(numeral2, tally_function2, &abacus);
     if (SUCCESS != code) { return code; }
 
     code = adjust_counts(&abacus);
     if (SUCCESS != code) { return code; }
-    to_roman_numerals(&abacus, resultNumeral);
+
+    if (is_too_small(&abacus)) { return RESULT_TOO_SMALL; }
+
+    to_numeral(&abacus, result_numeral);
 
     return code;
 }
 
 ReturnCode add(const char* addend1, const char* addend2, char* sum) {
-    return compute(addend1, &tally, addend2, &tally, sum);
+    return compute(addend1, &additive_tally, addend2, &additive_tally, sum);
 }
 
 ReturnCode subtract(const char* minuend, const char* subtrahend, char* difference) {
-    return compute(minuend, &tally, subtrahend, &subtractive_tally, difference);
+    return compute(minuend, &additive_tally, subtrahend, &subtractive_tally, difference);
 }
