@@ -132,7 +132,6 @@ static ReturnCode subtractive_tally(const int abacus_index, const int next_abacu
     }
 
     ReturnCode code = borrow_if_necessary(abacus_index, abacus);
-    if (SUCCESS != code) { return code; }
 
     abacus->rows[abacus_index].count--;
 
@@ -150,11 +149,14 @@ static ReturnCode iterate_over_numeral(const char* numeral, TallyFunction tally_
         abacus_index = get_abacus_index(numeral[numeral_index], abacus);
         next_abacus_index = get_abacus_index(numeral[numeral_index - 1], abacus);
         if (abacus_index < 0) {
-            return INVALID_CHARACTER;
+            code = INVALID_CHARACTER;
+            break;
         }
 
         code = tally_function(abacus_index, next_abacus_index, &numeral_index, abacus);
-        if (code != SUCCESS) { return code; }
+        if (code != SUCCESS) {
+            break;
+        }
     }
 
     return code;
