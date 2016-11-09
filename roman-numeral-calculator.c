@@ -1,3 +1,4 @@
+#include <stdbool.h>
 #include <string.h>
 
 #include "roman-numeral-calculator.h"
@@ -34,8 +35,8 @@ struct Abacus initialize_abacus(void) {
     return abacus;
 }
 
-static int is_even(const int number) {
-    return number % 2 == 0 ? 1 : 0;
+static bool is_even(const int number) {
+    return number % 2 == 0 ? true : false;
 }
 
 static int ratio_to_next_row(const int row_index) {
@@ -54,39 +55,42 @@ static int get_abacus_index(const char symbol, const struct Abacus* abacus) {
     return -1;
 }
 
-static int is_preceding_subtractor(const int abacus_index, const int next_abacus_index) {
+static bool is_preceding_subtractor(const int abacus_index, const int next_abacus_index) {
     return is_even(next_abacus_index) && 
             next_abacus_index != (abacus_row_count - 1) && 
             (next_abacus_index + 1 == abacus_index || 
             next_abacus_index + 2 == abacus_index);
 }
 
-static int is_too_large(const struct Abacus* abacus) {
+static bool is_too_large(const struct Abacus* abacus) {
     const int last_row = abacus_row_count - 1;
     return abacus->rows[last_row].count >= (ratio_to_next_row(last_row) - 1);
 }
 
-static int is_too_small(const struct Abacus* abacus) {
+static bool is_too_small(const struct Abacus* abacus) {
     int index;
     for (index = 0; index < abacus_row_count; index++) {
         if (abacus->rows[index].count > 0) {
-            return 0;
+            return false;
         }
     }
-    return 1;
+    return true;
+}
+
+static void adjust_count(const int row_index, struct Abacus* abacus) {
+    int ratio = ratio_to_next_row(row_index);
+
+    while (abacus->rows[row_index].count >= ratio) {
+        abacus->rows[row_index + 1].count++;
+        abacus->rows[row_index].count -= ratio;
+    }    
 }
 
 static ReturnCode adjust_counts(struct Abacus* abacus) {
     int index;
-    int ratio;
 
     for (index = 0; index < abacus_row_count - 1; index++) {
-        ratio = ratio_to_next_row(index);
-
-        while (abacus->rows[index].count >= ratio) {
-            abacus->rows[index + 1].count++;
-            abacus->rows[index].count -= ratio;
-        }
+        adjust_count(index, abacus);
     }
 
     return is_too_large(abacus) ? RESULT_TOO_LARGE : SUCCESS;
